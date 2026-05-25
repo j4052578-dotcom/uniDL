@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/yt-dlp/yt-dlp/master/.github/banner.svg" type="image/svg">
+    <title>VIDEO DOWNLOADER NO BULLSHIT</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap");
+
+        :root {
+            --bg-primary: #1b0143;
+            --bg-secondary: #2e0073;
+            --accent: #ffc800;
+            --accent-danger: #ff0055;
+            --text: #ffffff;
+            --text-muted: #6b40b5;
+            --card-bg: #151f32;
+            --border-color: #1e293b;
+            --badge-broken-bg: #7f1d1d;
+            --badge-broken-text: #fca5a5;
+            --badge-netrc-bg: #0c4a6e;
+            --badge-netrc-text: #bae6fd;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            color: var(--text);
+            font-family: "Oswald", sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-secondary);
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .top_menu {
+            padding: clamp(15px, 4vw, 30px) 15px;
+            background-color: var(--bg-primary);
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            text-align: center;
+            font-weight: 900;
+            letter-spacing: 0.2rem;
+            user-select: none;
+        }
+
+        .top_menu > a {
+            all: unset;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .top_menu > a:hover {
+            color: var(--accent);
+        }
+
+        .main_section {
+            flex: 1;
+            padding: clamp(15px, 5vw, 40px) 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: clamp(1.5rem, 5vw, 3rem);
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .console_box {
+            width: 100%;
+            max-width: 800px;
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: clamp(12px, 3vw, 20px);
+            border: 2px solid #4300a7;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .console_header {
+            font-size: 0.9rem;
+            letter-spacing: 0.1rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .console_status {
+            font-weight: bold;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        .console_progress_bar {
+            width: 100%;
+            height: 6px;
+            background: #0f0026;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .console_progress_fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), #00ff1e);
+            transition: width 0.3s ease;
+        }
+
+        .form_section {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(1rem, 3vw, 1.5rem);
+            align-items: center;
+            width: 100%;
+        }
+
+        .form_title {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            text-align: center;
+            letter-spacing: 0.1rem;
+            padding: 0 10px;
+        }
+
+        .form_input_wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .form_input_wrapper > input {
+            all: unset;
+            padding: clamp(14px, 3vw, 18px) 20px;
+            width: 100%;
+            border-radius: 50px;
+            background-color: var(--bg-primary);
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .form_input_wrapper > input:focus {
+            border-color: #5400d0;
+        }
+
+        .form_input_wrapper > input::placeholder {
+            color: var(--text-muted);
+            font-weight: 900;
+            text-align: center;
+            letter-spacing: 0.1rem;
+        }
+
+        .submit_btn_container {
+            width: 100%;
+            max-width: 240px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #form_button {
+            all: unset;
+            background-color: #000000;
+            padding: 12px 0;
+            width: 100%;
+            text-align: center;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            letter-spacing: 0.2rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #form_button:hover:not(:disabled) {
+            transform: scale(1.03);
+            background: #0a0a0a;
+        }
+
+        #form_button:disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+
+        .quality_table {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            max-width: 800px;
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: clamp(15px, 4vw, 25px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .table_title {
+            font-size: clamp(1.2rem, 3vw, 1.4rem);
+            font-weight: bold;
+            color: var(--accent);
+            border-bottom: 2px solid #4300a7;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        .table_header {
+            font-size: 1.1rem;
+            letter-spacing: 0.1rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1.5fr 1fr 1.5fr;
+            align-items: center;
+            padding: 12px 5px;
+            gap: 10px;
+        }
+
+        .col {
+            font-size: 1.1rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .col_action {
+            text-align: right;
+        }
+
+        .col_action > button {
+            all: unset;
+            cursor: pointer;
+            color: var(--accent);
+            font-weight: bold;
+            letter-spacing: 0.05rem;
+            transition: color 0.2s ease, letter-spacing 0.2s ease;
+        }
+
+        .col_action > button:hover:not(:disabled) {
+            color: var(--accent-danger);
+            letter-spacing: 0.12rem;
+        }
+
+        .col_action > button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .vertical_line {
+            height: 1px;
+            width: 100%;
+            background-color: #4300a7;
+        }
+
+        .table_footer_note {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--accent);
+            opacity: 0.8;
+            text-align: center;
+        }
+
+        .supported_sites_section {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1000px;
+            gap: 1.5rem;
+        }
+
+        .sites_header {
+            text-align: center;
+            background: var(--bg-primary);
+            padding: clamp(1.5rem, 4vw, 2.5rem) 1rem;
+            border-radius: 12px;
+            border: 2px solid #4300a7;
+        }
+
+        .sites_header h2 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .sites_header p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .search_container {
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .search_container > input {
+            all: unset;
+            width: 100%;
+            padding: 12px 20px;
+            background: var(--bg-secondary);
+            border: 2px solid #4300a7;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            color: var(--text);
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .search_container > input:focus {
+            border-color: var(--accent);
+        }
+
+        .search_container > input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .site_list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+            list-style: none;
+            width: 100%;
+        }
+
+        .site_item {
+            background-color: var(--bg-primary);
+            border: 2px solid #4300a7;
+            border-radius: 8px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .site_name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--text);
+            word-break: break-all;
+        }
+
+        .site_desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            word-break: break-word;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border-radius: 4px;
+            text-transform: uppercase;
+            width: fit-content;
+        }
+
+        .badge.broken { background-color: var(--badge-broken-bg); color: var(--badge-broken-text); }
+        .badge.netrc { background-color: var(--badge-netrc-bg); color: var(--badge-netrc-text); }
+
+        .loading_sites {
+            text-align: center;
+            font-size: 1.3rem;
+            color: var(--accent);
+            padding: 2rem;
+        }
+
+        .footer {
+            font-size: 1rem;
+            background-color: var(--bg-primary);
+            padding: 25px 15px;
+            user-select: none;
+            display: flex;
+            line-height: 1.5rem;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            border-top: 2px solid #4300a7;
+            text-align: center;
+            gap: 4px;
+        }
+
+        .yt_dlp_link, .nav_toggle_btn {
+            color: #ffc800;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        #toast_container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            left: 20px;
+            max-width: 400px;
+            margin-left: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: #000;
+            border-left: 4px solid var(--accent);
+            padding: 12px 20px;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            font-size: 1rem;
+            letter-spacing: 0.05rem;
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        .toast.error { border-left-color: var(--accent-danger); }
+
+        .loader {
+            width: fit-content;
+            font-weight: bold;
+            font-family: monospace;
+            white-space: pre;
+            font-size: 1rem;
+            line-height: 1.2em;
+            height: 1.2em;
+            overflow: hidden;
+        }
+        .loader:before {
+            content:"Loading...\A⌰oading...\A⌰⍜ading...\A⌰⍜⏃ding...\A⌰⍜⏃⎅ing...\A⌰⍜⏃⎅⟟ng...\A⌰⍜⏃⎅⟟⋏g...\A⌰⍜⏃⎅⟟⋏☌...\A⌰⍜⏃⎅⟟⋏☌⟒..\A⌰⍜⏃⎅⟟⋏☌⟒⏁.\A⌰⍜⏃⎅⟟⋏☌⟒⏁⋔"; 
+            white-space: pre;
+            display: inline-block;
+            animation: l39 1s infinite steps(11) alternate;
+        }
+
+        @keyframes l39 { 100%{transform: translateY(-100%)} }
+        @keyframes pulse { to { opacity: 0.5; } }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsive Mobile Layout Overrides */
+        @media screen and (max-width: 600px) {
+            .main_section {
+                padding: 15px 10px;
+                gap: 1.25rem;
+            }
+
+            .quality_table {
+                padding: 15px 10px;
+            }
+
+            .row {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                background: rgba(0, 0, 0, 0.25);
+                border: 1px solid #4300a7;
+                border-radius: 8px;
+                padding: 12px;
+                margin-bottom: 0px;
+                gap: 6px;
+            }
+
+            .col {
+                font-size: 1.1rem;
+                text-align: center;
+                white-space: normal;
+                word-break: break-word;
+            }
+
+            .col:nth-child(1) {
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: var(--accent);
+            }
+            .col:nth-child(1)::before { content: "RESOLUTION: "; color: var(--text-muted); font-size: 0.9rem; font-weight: 400; }
+            
+            .col:nth-child(3)::before { content: "SIZE: "; color: var(--text-muted); font-size: 0.9rem; }
+
+            .col_hide_mobile {
+                display: block !important;
+            }
+            .col:nth-child(2)::before { content: "TYPE: "; color: var(--text-muted); font-size: 0.9rem; }
+            .col:nth-child(4)::before { content: "EXT: "; color: var(--text-muted); font-size: 0.9rem; }
+
+            .col_action {
+                text-align: center;
+                margin-top: 6px;
+                padding-top: 8px;
+                border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            }
+
+            .col_action > button {
+                display: block;
+                width: 100%;
+                background: var(--accent);
+                color: #000;
+                padding: 10px;
+                border-radius: 6px;
+                text-align: center;
+                font-weight: 900;
+                letter-spacing: 0.1rem;
+            }
+
+            .col_action > button:hover {
+                background: #fff;
+                color: #000;
+            }
+
+            .vertical_line {
+                display: none;
+            }
+
+            .site_list {
+                grid-template-columns: 1fr;
+            }
+
+            .submit_btn_container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top_menu">
+        <a href="#" onclick="switchView('downloader')">VIDEO DOWNLOADER NO BULLSHIT</a>
+    </div>
+
+    <div class="main_section" id="view_downloader">
+        <div class="console_box">
+            <div class="console_header">
+                <span>System Engine Output</span>
+                <span class="console_status" id="engine_status">Waking engines...</span>
+            </div>
+            <div id="console_text" style="font-family: monospace; font-size: 0.9rem; color: #00ff1e; min-height: 20px;">
+                Initializing environment loops...
+            </div>
+            <div class="console_progress_bar">
+                <div class="console_progress_fill" id="progress_fill"></div>
+            </div>
+        </div>
+
+        <div class="form_section">
+            <div class="form_title">
+                <p>DOWNLOAD VIDEO FROM ANY <span class="nav_toggle_btn" onclick="switchView('sites')">SUPPORTED WEBSITES</span></p>
+            </div>
+
+            <div class="form_input_wrapper">
+                <input type="url" id="form_input_url" placeholder="ENTER VALID MEDIA LINK HERE">
+            </div>
+
+            <div class="submit_btn_container">
+                <button disabled type="submit" id="form_button" onclick="form_input_submit()">GET QUALITIES</button>
+            </div>
+        </div>
+
+        <div class="quality_table" id="quality_table"></div>
+    </div>
+
+    <div class="main_section" id="view_supported_sites" style="display: none;">
+        <div class="supported_sites_section" style="display: flex;">
+            <div class="sites_header">
+                <h2>SUPPORTED EXTRACTORS</h2>
+                <p id="headerDescription">Loading dynamic site listings directly from the yt-dlp repository...</p>
+                <div class="search_container">
+                    <input type="text" id="searchInput" placeholder="SEARCH EXTRACTOR DOMAINS..." onkeyup="filterSites()">
+                </div>
+            </div>
+            <div id="loadingState" class="loading_sites">FETCHING AND PARSING EXTRACTORS...</div>
+            <ul class="site_list" id="siteList" style="display: none;"></ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        <span>ENJOY AD FREE EXPERIENCE</span>
+        <span>PROUDLY USES <span onclick="window.open('https://github.com/yt-dlp/yt-dlp', '_blank')", class="yt_dlp_link">YT-DLP</span> FOR BACKEND PROCESSING</span>
+        <span>PROUDLY USES FFMPEG WASM CORE FOR CLIENT SIDE MULTIPLEXING</span>
+    </div>
+
+    <div id="toast_container"></div>
+
+    <script src="./coi-serviceworker.js"></script>
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+
+    <script>
+        const url_input = document.getElementById("form_input_url");
+        const button_input = document.getElementById("form_button");
+        const quality_table = document.getElementById("quality_table");
+        const engine_status = document.getElementById("engine_status");
+        const console_text = document.getElementById("console_text");
+        const progress_fill = document.getElementById("progress_fill");
+
+        const api_url = 'http://192.168.8.11:5000';
+        const TARGET_MD_URL = 'https://raw.githubusercontent.com/yt-dlp/yt-dlp/master/supportedsites.md';
+
+        const { createFFmpeg } = FFmpeg;
+
+        const states = { is_ua_set: false, is_processing: false, is_sites_loaded: false };
+        const instances = { ffmpeg: null, datas: null, title: null };
+
+        function showToast(message, isError = false) {
+            const container = document.getElementById("toast_container");
+            const toast = document.createElement("div");
+            toast.className = `toast ${isError ? 'error' : ''}`;
+            toast.innerText = message.toUpperCase();
+            container.appendChild(toast);
+            setTimeout(() => { toast.remove(); }, 4000);
+        }
+
+        function updateConsole(text, statusText = "Processing", percent = null) {
+            console_text.innerText = `> ${text.toUpperCase()}`;
+            engine_status.innerText = statusText.toUpperCase();
+            if (percent !== null) {
+                progress_fill.style.width = `${percent}%`;
+            }
+        }
+
+        function switchView(target) {
+            if (target === 'sites') {
+                document.getElementById('view_downloader').style.display = 'none';
+                document.getElementById('view_supported_sites').style.display = 'flex';
+                if (!states.is_sites_loaded) fetchAndParseSites();
+            } else {
+                document.getElementById('view_supported_sites').style.display = 'none';
+                document.getElementById('view_downloader').style.display = 'flex';
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", async () => {
+            updateConsole("Loading FFmpeg WebAssembly modules...", "Initializing", 15);
+            try {
+                instances.ffmpeg = createFFmpeg({ log: false });
+                await instances.ffmpeg.load({
+                    coreURL: "https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js",
+                    wasmURL: "https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm",
+                });
+                updateConsole("Core multiplexer hardware ready.", "Ready", 100);
+                setTimeout(() => { progress_fill.style.width = '0%'; }, 1000);
+            } catch (error) {
+                console.error("WASM Isolation Error:", error);
+                updateConsole("FFmpeg setup broke. Missing Isolation Headers.", "Fatal Error", 0);
+                showToast("System missing modern isolation wrappers", true);
+            }
+        });
+
+        function isUrlValid(string) {
+            try {
+                const url = new URL(string);
+                return (url.protocol === "http:" || url.protocol === "https:") && url.hostname.includes(".");
+            } catch {
+                return false;
+            }
+        }
+
+        url_input.addEventListener("input", (e) => {
+            if (states.is_processing) return;
+            button_input.textContent = "GET QUALITIES";
+            button_input.disabled = !isUrlValid(e.target.value);
+        });
+
+        url_input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" && isUrlValid(url_input.value) && !states.is_processing) {
+                form_input_submit();
+            }
+        });
+
+        async function set_header() {
+            try {
+                const user_agent = btoa(navigator.userAgent);
+                const res = await fetch(`${api_url}/set_header?header=${user_agent}`);
+                const data = await res.json();
+                if (data.error) throw new Error();
+                states.is_ua_set = true;
+                updateConsole("User-Agent mapping completed cleanly.", "Ready");
+                return true;
+            } catch {
+                showToast("Backend connection failure. Stream alignment degraded.", true);
+                return false;
+            }
+        }
+
+        function toggleActionButtons(disabled) {
+            document.querySelectorAll(".col_action > button").forEach(btn => btn.disabled = disabled);
+        }
+
+        function get_table_row(reso, type, id, filesize, extension) {
+            const row = document.createElement("section");
+            row.className = "row";
+            row.innerHTML = `
+                <section class="col">${reso}</section>
+                <section class="col col_hide_mobile">${type.toUpperCase()}</section>
+                <section class="col">${filesize}</section>
+                <section class="col col_hide_mobile">${extension.toUpperCase()}</section>
+                <section class="col col_action">
+                    <button data-id="${id}" onclick="start_download_for('${id}')">DOWNLOAD</button>
+                </section>
+            `;
+            return row;
+        }
+
+        async function form_input_submit() {
+            if (states.is_processing) return;
+            states.is_processing = true;
+            button_input.disabled = true;
+            quality_table.style.display = "none";
+            quality_table.innerHTML = "";
+            button_input.innerHTML = '<div class="loader"></div>';
+
+            if (!states.is_ua_set) {
+                const success = await set_header();
+                if (!success) {
+                    button_input.textContent = "ERROR";
+                    states.is_processing = false;
+                    button_input.disabled = false;
+                    return;
+                }
+            }
+
+            const rawUrl = url_input.value.trim();
+            const encodedUrl = btoa(unescape(encodeURIComponent(rawUrl)));
+
+            instances.title = "Scraped Media Asset";
+            try {
+                updateConsole("Parsing source title identifiers...", "Scraping");
+                const tres = await fetch(`${api_url}/get_title?url=${encodedUrl}`);
+                if (tres.ok) {
+                    const tdata = await tres.json();
+                    if (tdata.title) instances.title = tdata.title;
+                }
+            } catch (e) {
+                console.warn("Title route inaccessible, falling back.");
+            }
+
+            try {
+                updateConsole("Contacting localized parser instance tracks...", "Parsing");
+                const res = await fetch(`${api_url}/get_for?url=${encodedUrl}`);
+                if (!res.ok) throw new Error();
+                instances.datas = await res.json();
+                if (instances.datas.error || !Array.isArray(instances.datas) || instances.datas.length === 0) {
+                    throw new Error();
+                }
+            } catch (error) {
+                showToast("Target processing instance or URL payload failed.", true);
+                button_input.textContent = "ERROR";
+                states.is_processing = false;
+                button_input.disabled = false;
+                return;
+            }
+
+            button_input.textContent = "LOADED";
+            button_input.disabled = false;
+            states.is_processing = false;
+
+            quality_table.innerHTML = `
+                <p class="table_title">${instances.title}</p>
+                <p class="table_header">Available Stream Packages</p>
+            `;
+
+            instances.datas.forEach((data, idx) => {
+                const row = get_table_row(
+                    data.resolution || "Audio Stream",
+                    data.type,
+                    data.id,
+                    data.filesize,
+                    data.video_extension || data.audio_extension || data.ext || "mp4"
+                );
+                quality_table.appendChild(row);
+
+                if (idx !== instances.datas.length - 1) {
+                    const line = document.createElement("div");
+                    line.className = "vertical_line";
+                    quality_table.appendChild(line);
+                }
+            });
+
+            const note = document.createElement("div");
+            note.className = "table_footer_note";
+            note.innerHTML = "* AUTOMATIC CLIENT-SIDE REMUXING TRIGGERS VIA LOCAL PROXY TUNNEL FOR SPLIT STREAMS.";
+            quality_table.appendChild(note);
+            quality_table.style.display = "flex";
+        }
+
+        async function fetchStreamWithProgress(url, description) {
+            const encodedUrl = btoa(unescape(encodeURIComponent(url)));
+            const proxyUrl = `${api_url}/stream_proxy`;
+
+            const response = await fetch(proxyUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: encodedUrl })
+            });
+            if (!response.ok) throw new Error(`Proxy network code: ${response.status}`);
+
+            const contentLength = response.headers.get('Content-Length');
+            const total = contentLength ? parseInt(contentLength, 10) : 0;
+
+            const reader = response.body.getReader();
+            let loaded = 0;
+            const chunks = [];
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                chunks.push(value);
+                loaded += value.byteLength;
+                if (total > 0) {
+                    const pct = Math.round((loaded / total) * 100);
+                    updateConsole(`${description} [${pct}%]`, "Buffering", Math.round(pct * 0.8));
+                }
+            }
+
+            const completeArray = new Uint8Array(loaded);
+            let offset = 0;
+            for (const chunk of chunks) {
+                completeArray.set(chunk, offset);
+                offset += chunk.byteLength;
+            }
+            return completeArray.buffer;
+        }
+
+        async function forceDownload(fileUrl, ext) {
+            try {
+                updateConsole("Opening proxy download tunnel...", "Streaming", 30);
+                const buf = await fetchStreamWithProgress(fileUrl, "Downloading file payload");
+
+                updateConsole("Generating deployment blob...", "Saving", 90);
+                const blob = new Blob([buf], { type: "application/octet-stream" });
+                const blobUrl = URL.createObjectURL(blob);
+
+                const safeName = instances.title.replace(/[/\\?%*:|"<>]/g, '-');
+                const a = document.createElement("a");
+                a.href = blobUrl;
+                a.download = `${safeName}.${ext}`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(blobUrl);
+
+                updateConsole("Pipeline cleared successfully.", "Complete", 100);
+                setTimeout(() => { progress_fill.style.width = '0%'; }, 1500);
+            } catch (err) {
+                console.error(err);
+                showToast("Download transmission pipeline failed.", true);
+                updateConsole("Transmission failed.", "Error", 0);
+            }
+        }
+
+        async function youtube_download(videoData) {
+            if (!instances.ffmpeg || !instances.ffmpeg.isLoaded()) {
+                showToast("FFmpeg Core down. Falling back to video-only track.", true);
+                await forceDownload(videoData.url, videoData.video_extension || "mp4");
+                return;
+            }
+
+            try {
+                updateConsole("Locating high bit-rate audio payload...", "Routing", 5);
+                let audioData = instances.datas.find(d => d.id === "251" || d.type === "audio_only");
+                if (!audioData) audioData = instances.datas.find(d => d.audio_codec !== "none");
+
+                if (!audioData) {
+                    showToast("No track target mapping for separate audio found.", true);
+                    await forceDownload(videoData.url, videoData.video_extension || "mp4");
+                    return;
+                }
+
+                updateConsole("Connecting video pipeline channel...", "Streaming", 10);
+                const vBuf = await fetchStreamWithProgress(videoData.url, "Downloading Video Component");
+
+                updateConsole("Connecting audio pipeline channel...", "Streaming", 50);
+                const aBuf = await fetchStreamWithProgress(audioData.url, "Downloading Audio Component");
+
+                updateConsole("Injecting buffers into virtual sandbox...", "Muxing", 80);
+                instances.ffmpeg.FS('writeFile', 'vid.raw', new Uint8Array(vBuf));
+                instances.ffmpeg.FS('writeFile', 'aud.raw', new Uint8Array(aBuf));
+
+                updateConsole("Multiplexing audio/video frames without compression loss...", "Encoding", 90);
+                await instances.ffmpeg.run(
+                    '-i', 'vid.raw', '-i', 'aud.raw',
+                    '-c:v', 'copy', '-c:a', 'aac',
+                    '-map', '0:v:0', '-map', '1:a:0',
+                    'output.mp4'
+                );
+
+                updateConsole("Extracting completed video file wrapper...", "Finalizing", 95);
+                const rawOutput = instances.ffmpeg.FS('readFile', 'output.mp4');
+                const combinedBlob = new Blob([rawOutput.buffer], { type: 'video/mp4' });
+                const blobUrl = URL.createObjectURL(combinedBlob);
+
+                const safeName = instances.title.replace(/[/\\?%*:|"<>]/g, '-');
+                const a = document.createElement("a");
+                a.href = blobUrl;
+                a.download = `${safeName}.mp4`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(blobUrl);
+
+                try {
+                    instances.ffmpeg.FS('unlink', 'vid.raw');
+                    instances.ffmpeg.FS('unlink', 'aud.raw');
+                    instances.ffmpeg.FS('unlink', 'output.mp4');
+                } catch (e) { console.warn("FS cleaning warning: ", e); }
+
+                updateConsole("Mux operations finalized cleanly.", "Complete", 100);
+                setTimeout(() => { progress_fill.style.width = '0%'; }, 1500);
+            } catch (err) {
+                console.error(err);
+                showToast("WASM thread crashed. Saving raw video segment only.", true);
+                await forceDownload(videoData.url, videoData.video_extension || "mp4");
+            }
+        }
+
+        async function start_download_for(id) {
+            if (states.is_processing) return;
+            states.is_processing = true;
+            toggleActionButtons(true);
+
+            const data = instances.datas.find(d => d.id == id);
+            if (!data) {
+                showToast("Invalid stream identifier layout targeted.", true);
+                toggleActionButtons(false);
+                states.is_processing = false;
+                return;
+            }
+
+            if (data.type === "video_only") {
+                await youtube_download(data);
+            } else {
+                await forceDownload(data.url, data.video_extension || data.audio_extension || data.ext || "mp4");
+            }
+
+            toggleActionButtons(false);
+            states.is_processing = false;
+        }
+
+        async function fetchAndParseSites() {
+            try {
+                const response = await fetch(TARGET_MD_URL);
+                if (!response.ok) throw new Error();
+
+                const markdown = await response.text();
+                const lines = markdown.split('\n');
+
+                const siteListContainer = document.getElementById('siteList');
+                let sitesHTML = '';
+
+                const itemRegex = /^\s*-\s*\*\*(.*?)\*\*(.*)$/;
+                const netrcRegex = /"netrc machine"/i;
+                const brokenRegex = /Currently broken/i;
+
+                lines.forEach(line => {
+                    const match = line.match(itemRegex);
+                    if (match) {
+                        const siteName = match[1].trim();
+                        let extraContent = match[2].trim();
+
+                        let isNetrc = netrcRegex.test(extraContent);
+                        let isBroken = brokenRegex.test(extraContent);
+
+                        let description = extraContent
+                            .replace(/\[.*?\]\(.*?\)/g, '')
+                            .replace(/:\s*\(\*\*Currently broken\*\*\)/i, '')
+                            .replace(/:\s*/, '')
+                            .trim();
+
+                        sitesHTML += `
+                            <li class="site-item">
+                                <span class="site-name">${siteName}</span>
+                                ${isNetrc ? '<span class="badge netrc">Requires netrc</span>' : ''}
+                                ${isBroken ? '<span class="badge broken">Currently broken</span>' : ''}
+                                ${description ? `<span class="site-desc">${description}</span>` : ''}
+                            </li>
+                        `;
+                    }
+                });
+
+                siteListContainer.innerHTML = sitesHTML;
+                document.getElementById('loadingState').style.display = 'none';
+                siteListContainer.style.display = 'grid';
+                document.getElementById('headerDescription').innerText = `This software interfaces directly with yt-dlp to support continuous engine updates across upstream targets.`;
+                states.is_sites_loaded = true;
+            } catch (error) {
+                console.error('Extraction Sync Error:', error);
+                document.getElementById('loadingState').innerText = 'FAILED TO SYNC EXTERNAL ASSET INDICES FROM GITHUB.';
+            }
+        }
+
+        function filterSites() {
+            const filter = document.getElementById('searchInput').value.toLowerCase();
+            const li = document.getElementById('siteList').getElementsByTagName('li');
+
+            for (let i = 0; i < li.length; i++) {
+                const nameNode = li[i].querySelector('.site-name');
+                const descNode = li[i].querySelector('.site-desc');
+
+                const nameText = nameNode ? nameNode.textContent || nameNode.innerText : '';
+                const descText = descNode ? descNode.textContent || descNode.innerText : '';
+
+                if (nameText.toLowerCase().includes(filter) || descText.toLowerCase().includes(filter)) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+
+        set_header();
+    </script>
+</body>
+
+</html>
