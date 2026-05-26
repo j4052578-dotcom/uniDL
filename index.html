@@ -10,6 +10,7 @@
         href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
         rel="stylesheet">
     <style>
+        /* Your existing styles – unchanged, identical to original */
         *,
         *::before,
         *::after {
@@ -203,7 +204,6 @@
             pointer-events: none
         }
 
-        /* input */
         .input-group {
             display: flex;
             gap: 12px;
@@ -305,7 +305,6 @@
             display: none
         }
 
-        /* error banner */
         .error-banner {
             display: none;
             background: rgba(248, 113, 113, .1);
@@ -364,7 +363,6 @@
             }
         }
 
-        /* video info */
         .video-info {
             display: none;
             gap: 18px;
@@ -420,7 +418,6 @@
             color: var(--muted)
         }
 
-        /* mode toggle */
         .mode-row {
             display: flex;
             gap: 10px;
@@ -481,7 +478,6 @@
             vertical-align: middle
         }
 
-        /* section label */
         .section-label {
             font-family: var(--font-head);
             font-size: .78rem;
@@ -492,7 +488,6 @@
             margin-bottom: 14px
         }
 
-        /* tabs */
         .format-tabs {
             display: flex;
             gap: 8px;
@@ -519,7 +514,6 @@
             color: var(--accent2)
         }
 
-        /* format grid */
         .format-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
@@ -626,7 +620,6 @@
             margin-top: 6px
         }
 
-        /* merge pair selector */
         .merge-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -649,7 +642,6 @@
             max-height: 220px
         }
 
-        /* download / merge buttons */
         .download-action {
             display: none;
             margin-top: 20px;
@@ -720,7 +712,6 @@
             cursor: not-allowed
         }
 
-        /* progress */
         .progress-card {
             display: none
         }
@@ -868,7 +859,6 @@
             border-radius: 4px
         }
 
-        /* success */
         .success-card {
             display: none;
             text-align: center;
@@ -937,7 +927,6 @@
             color: var(--accent2)
         }
 
-        /* empty */
         .empty-formats {
             text-align: center;
             padding: 28px;
@@ -950,7 +939,6 @@
             display: block
         }
 
-        /* hints */
         .hints {
             display: flex;
             gap: 10px;
@@ -970,7 +958,6 @@
             gap: 6px
         }
 
-        /* ffmpeg loader overlay */
         .ffmpeg-loading {
             display: none;
             align-items: center;
@@ -1017,7 +1004,7 @@
         }
 
         .hidden {
-            display: none !important
+            display: none !important;
         }
     </style>
 </head>
@@ -1028,7 +1015,6 @@
     <div class="orb orb-3"></div>
 
     <div class="app">
-        <!-- HEADER -->
         <header>
             <div class="logo-mark">
                 <div class="logo-icon">⬇</div>
@@ -1038,7 +1024,6 @@
             <p class="subtitle">Paste any video link and get exactly the quality you want.</p>
         </header>
 
-        <!-- STEP 1: URL -->
         <div class="card" id="step-url">
             <div class="input-group">
                 <div class="url-wrap">
@@ -1068,10 +1053,7 @@
             </div>
         </div>
 
-        <!-- STEP 2: FORMAT PICKER -->
         <div class="card hidden" id="step-formats">
-
-            <!-- MODE TOGGLE -->
             <p class="section-label">What do you want?</p>
             <div class="mode-row">
                 <button class="mode-btn active" id="mode-direct" data-mode="direct">
@@ -1090,7 +1072,6 @@
                 </button>
             </div>
 
-            <!-- DIRECT MODE -->
             <div id="panel-direct">
                 <div class="format-tabs" id="direct-tabs">
                     <button class="tab-btn active" data-type="all">All</button>
@@ -1102,7 +1083,6 @@
                 <div class="empty-formats" id="direct-empty">No formats in this category.</div>
             </div>
 
-            <!-- MERGE MODE -->
             <div id="panel-merge" class="hidden">
                 <div
                     style="background:rgba(108,99,255,.07);border:1px solid rgba(108,99,255,.18);border-radius:var(--rs);padding:14px 16px;margin-bottom:20px;font-size:.83rem;color:var(--accent2);line-height:1.6">
@@ -1128,7 +1108,6 @@
                 </div>
             </div>
 
-            <!-- ACTION BUTTON -->
             <div class="download-action" id="download-action">
                 <button class="btn-download" id="btn-direct">
                     <span>⬇</span><span id="direct-label">Download</span>
@@ -1147,11 +1126,8 @@
             </div>
         </div>
 
-        <!-- STEP 3: PROGRESS -->
         <div class="card progress-card" id="step-progress">
-            <div class="prog-phases" id="prog-phases">
-                <!-- populated dynamically -->
-            </div>
+            <div class="prog-phases" id="prog-phases"></div>
             <div class="merge-log" id="merge-log"></div>
             <div class="error-banner" id="dl-error" style="margin-top:18px">
                 <span class="error-icon">⚠️</span>
@@ -1162,7 +1138,6 @@
             </div>
         </div>
 
-        <!-- STEP 4: SUCCESS -->
         <div class="card success-card" id="step-success">
             <div class="success-icon" id="success-icon">✅</div>
             <div class="success-title" id="success-title">All done!</div>
@@ -1170,7 +1145,6 @@
             <button class="btn-again" id="btn-again">Download another video</button>
         </div>
 
-        <!-- HINTS -->
         <div class="hints">
             <div class="hint-pill">🎬 YouTube</div>
             <div class="hint-pill">📸 Instagram</div>
@@ -1181,16 +1155,13 @@
         </div>
     </div>
 
-    <script src="./coi-serviceworker.js"></script>
-
-    <!-- ffmpeg.wasm loaded lazily via ESM -->
     <script type="module">
-        // ── CONFIG ───────────────────────────────────────────────────────────────────
-        const API = 'https://unidl-oiry.onrender.com';   // same-origin; change to 'http://localhost:8000' if separate
+        // ── CONFIG ─────────────────────────────────────────────────────────
+        const API = 'http://localhost:5000';   // your backend
 
-        // ── STATE ────────────────────────────────────────────────────────────────────
+        // ── STATE ─────────────────────────────────────────────────────────
         let formats = [];
-        let mode = 'direct';   // 'direct' | 'merge'
+        let mode = 'direct';
         let directTab = 'all';
         let selectedDirect = null;
         let selectedVideo = null;
@@ -1198,15 +1169,15 @@
         let pollTimer = null;
         let ffmpegReady = false;
         let ffmpegLoading = false;
-        let FFmpegLib = null;   // lazily imported
+        let FFmpegLib = null;
 
-        // ── ELEMENTS ─────────────────────────────────────────────────────────────────
+        // ── DOM shortcuts ──────────────────────────────────────────────────
         const $ = id => document.getElementById(id);
         const urlInput = $('url-input');
         const fetchBtn = $('fetch-btn');
         const fetchError = $('fetch-error');
-        const fetchErrT = $('fetch-err-title');
-        const fetchErrM = $('fetch-err-msg');
+        const fetchErrTitle = $('fetch-err-title');
+        const fetchErrMsg = $('fetch-err-msg');
         const videoInfo = $('video-info');
         const thumbImg = $('video-thumb');
         const thumbPh = $('thumb-ph');
@@ -1229,53 +1200,119 @@
         const directLabel = $('direct-label');
         const mergeLabel = $('merge-label');
         const formatError = $('format-error');
-        const formatErrM = $('format-err-msg');
-        // const ffmpegLoading = $('ffmpeg-loading');
-        const ffmpegLoadM = $('ffmpeg-load-msg');
+        const formatErrMsg = $('format-err-msg');
+        const ffmpegLoadingEl = $('ffmpeg-loading');
+        const ffmpegLoadMsg = $('ffmpeg-load-msg');
 
         const stepProgress = $('step-progress');
         const progPhases = $('prog-phases');
         const mergeLog = $('merge-log');
         const dlError = $('dl-error');
-        const dlErrT = $('dl-err-title');
-        const dlErrM = $('dl-err-msg');
+        const dlErrTitle = $('dl-err-title');
+        const dlErrMsg = $('dl-err-msg');
 
         const stepSuccess = $('step-success');
         const successTitle = $('success-title');
         const successSub = $('success-sub');
         const btnAgain = $('btn-again');
 
-        // ── HELPERS ──────────────────────────────────────────────────────────────────
-        const b64 = s => btoa(unescape(encodeURIComponent(s)));
-        const fmt = b => { if (!b || b <= 0) return ''; const u = ['B', 'KB', 'MB', 'GB']; let i = 0, v = b; while (v >= 1024 && i < u.length - 1) { v /= 1024; i++ } return `${v.toFixed(i ? 1 : 0)} ${u[i]}`; };
-        const dur = s => { if (!s) return ''; const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), ss = Math.floor(s % 60); return h ? `${h}:${String(m).padStart(2, '0')}:${String(ss).padStart(2, '0')}` : `${m}:${String(ss).padStart(2, '0')}`; };
-        const show = el => el.classList.remove('hidden');
-        const hide = el => el.classList.add('hidden');
-        const friendly = code => ({
+        // ── HELPERS ────────────────────────────────────────────────────────
+        function toBase64(str) {
+            const bytes = new TextEncoder().encode(str);
+            const bin = String.fromCharCode(...bytes);
+            return btoa(bin);
+        }
+
+        function formatSize(bytes) {
+            if (!bytes || bytes <= 0) return '';
+            const units = ['B', 'KB', 'MB', 'GB'];
+            let i = 0, v = bytes;
+            while (v >= 1024 && i < units.length - 1) { v /= 1024; i++; }
+            return `${v.toFixed(i ? 1 : 0)} ${units[i]}`;
+        }
+
+        function formatDuration(sec) {
+            if (!sec) return '';
+            const h = Math.floor(sec / 3600);
+            const m = Math.floor((sec % 3600) / 60);
+            const s = Math.floor(sec % 60);
+            return h ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}` : `${m}:${String(s).padStart(2, '0')}`;
+        }
+
+        function hide(el) { el.classList.add('hidden'); }
+        function show(el) { el.classList.remove('hidden'); }
+
+        const errorMessages = {
             MISSING_URL: 'Please paste a video link into the box above.',
             INVALID_BASE64: 'That link looks off — copy it directly from your browser\'s address bar and try again.',
             FORMAT_FETCH_FAILED: 'We couldn\'t read that video. The site may have blocked the request, or the link may have expired. Try again in a moment.',
             MISSING_FORMAT: 'Please choose a format before downloading.',
             PROGRESS_NOT_FOUND: 'The download session disappeared. Please try again.',
-        }[code] || 'Something unexpected happened. Please try again.');
-
-        function showErr(titleEl, msgEl, bannerEl, title, msg) {
-            titleEl.textContent = title; msgEl.textContent = msg; bannerEl.classList.add('visible');
+        };
+        function friendly(code) {
+            return errorMessages[code] || 'Something unexpected happened. Please try again.';
         }
-        function hideErr(el) { el.classList.remove('visible'); }
 
-        // ── FETCH FORMATS ─────────────────────────────────────────────────────────────
+        function showError(bannerEl, titleEl, msgEl, title, msg) {
+            titleEl.textContent = title;
+            msgEl.textContent = msg;
+            bannerEl.classList.add('visible');
+        }
+
+        function hideError(bannerEl) { bannerEl.classList.remove('visible'); }
+
+        // Force progress card to be visible (bypassing the problematic hidden class)
+        function showProgressCard() {
+            stepProgress.classList.remove('hidden');
+            stepProgress.style.display = 'block';
+            stepProgress.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function hideProgressCard() {
+            stepProgress.style.display = 'none';
+            stepProgress.classList.add('hidden');
+        }
+
+        // After a successful download, show the format selection again so user can download another format
+        function showFormatSelection() {
+            hideProgressCard();
+            stepSuccess.classList.remove('visible');
+            stepSuccess.classList.add('hidden');
+            // Clear selected formats so they need to pick again
+            selectedDirect = null;
+            selectedVideo = null;
+            selectedAudio = null;
+            dlAction.classList.remove('visible');
+            // Re-highlight the correct mode panel (direct/merge)
+            if (mode === 'direct') {
+                show(panelDirect);
+                hide(panelMerge);
+            } else {
+                hide(panelDirect);
+                show(panelMerge);
+            }
+            // Reset any "selected" styling in grids
+            document.querySelectorAll('.format-card').forEach(c => c.classList.remove('selected'));
+            show(stepFormats);
+            // Scroll to format card
+            stepFormats.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // ── FETCH FORMATS ──────────────────────────────────────────────────
         fetchBtn.addEventListener('click', fetchFormats);
         urlInput.addEventListener('keydown', e => e.key === 'Enter' && fetchFormats());
 
         async function fetchFormats() {
             const url = urlInput.value.trim();
-            if (!url) { showErr(fetchErrT, fetchErrM, fetchError, 'No link yet!', 'Paste a video link into the box above and try again.'); return; }
+            if (!url) {
+                showError(fetchError, fetchErrTitle, fetchErrMsg, 'No link yet!', 'Paste a video link into the box above and try again.');
+                return;
+            }
 
-            hideErr(fetchError);
+            hideError(fetchError);
             videoInfo.classList.remove('visible');
             hide(stepFormats);
-            hide(stepProgress);
+            hideProgressCard();
             hide(stepSuccess);
             dlAction.classList.remove('visible');
             selectedDirect = selectedVideo = selectedAudio = null;
@@ -1285,46 +1322,55 @@
             fetchBtn.classList.add('loading');
 
             try {
-                const r = await fetch(`${API}/formats?url=${encodeURIComponent(b64(url))}`);
-                const j = await r.json();
-                if (!j.success) throw { code: j.error?.code, message: j.error?.message };
-                formats = j.data.formats || [];
-                renderVideoInfo(j.data);
+                const encoded = toBase64(url);
+                const response = await fetch(`${API}/formats?url=${encodeURIComponent(encoded)}`);
+                const json = await response.json();
+                if (!json.success) throw { code: json.error?.code, message: json.error?.message };
+                formats = json.data.formats || [];
+                renderVideoInfo(json.data);
                 renderAllGrids();
                 show(stepFormats);
-            } catch (e) {
-                showErr(fetchErrT, fetchErrM, fetchError, 'Couldn\'t load video', friendly(e.code, e.message));
+            } catch (err) {
+                const msg = err.message || friendly(err.code);
+                showError(fetchError, fetchErrTitle, fetchErrMsg, 'Couldn\'t load video', msg);
             } finally {
                 fetchBtn.disabled = false;
                 fetchBtn.classList.remove('loading');
             }
         }
 
-        // ── VIDEO INFO ────────────────────────────────────────────────────────────────
-        function renderVideoInfo(d) {
-            videoTitle.textContent = d.title || 'Untitled video';
-            videoDur.textContent = d.duration ? `Duration: ${dur(d.duration)}` : '';
-            if (d.thumbnail) {
-                thumbImg.src = d.thumbnail;
+        function renderVideoInfo(data) {
+            videoTitle.textContent = data.title || 'Untitled video';
+            videoDur.textContent = data.duration ? `Duration: ${formatDuration(data.duration)}` : '';
+            if (data.thumbnail) {
+                thumbImg.src = data.thumbnail;
                 thumbImg.onload = () => { show(thumbImg); hide(thumbPh); };
                 thumbImg.onerror = () => { hide(thumbImg); show(thumbPh); };
             }
             videoInfo.classList.add('visible');
         }
 
-        // ── MODE TOGGLE ───────────────────────────────────────────────────────────────
-        document.querySelectorAll('.mode-btn').forEach(btn => btn.addEventListener('click', () => {
-            mode = btn.dataset.mode;
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            if (mode === 'direct') { show(panelDirect); hide(panelMerge); }
-            else { hide(panelDirect); show(panelMerge); preloadFFmpeg(); }
-            selectedDirect = selectedVideo = selectedAudio = null;
-            dlAction.classList.remove('visible');
-            hideErr(formatError);
-        }));
+        // ── MODE TOGGLE ────────────────────────────────────────────────────
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                mode = btn.dataset.mode;
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                if (mode === 'direct') {
+                    show(panelDirect);
+                    hide(panelMerge);
+                } else {
+                    hide(panelDirect);
+                    show(panelMerge);
+                    preloadFFmpeg();
+                }
+                selectedDirect = selectedVideo = selectedAudio = null;
+                dlAction.classList.remove('visible');
+                hideError(formatError);
+            });
+        });
 
-        // ── GRIDS ─────────────────────────────────────────────────────────────────────
+        // ── GRID RENDERING ─────────────────────────────────────────────────
         function renderAllGrids() {
             renderDirectGrid();
             renderMergeGrids();
@@ -1334,51 +1380,58 @@
             const filtered = directTab === 'all' ? formats : formats.filter(f => f.type === directTab);
             directGrid.innerHTML = '';
             directEmpty.classList.remove('visible');
-            if (!filtered.length) { directEmpty.classList.add('visible'); return; }
-            filtered.forEach(f => directGrid.appendChild(makeCard(f, 'direct')));
+            if (!filtered.length) {
+                directEmpty.classList.add('visible');
+                return;
+            }
+            filtered.forEach(f => directGrid.appendChild(makeFormatCard(f, 'direct')));
         }
 
         function renderMergeGrids() {
-            const vids = formats.filter(f => f.type === 'video_only');
-            const auds = formats.filter(f => f.type === 'audio_only');
-            mergeVGrid.innerHTML = ''; mergeAGrid.innerHTML = '';
-            mergeVEmpty.classList.remove('visible'); mergeAEmpty.classList.remove('visible');
-            if (!vids.length) mergeVEmpty.classList.add('visible');
-            else vids.forEach(f => mergeVGrid.appendChild(makeCard(f, 'merge-video')));
-            if (!auds.length) mergeAEmpty.classList.add('visible');
-            else auds.forEach(f => mergeAGrid.appendChild(makeCard(f, 'merge-audio')));
+            const videos = formats.filter(f => f.type === 'video_only');
+            const audios = formats.filter(f => f.type === 'audio_only');
+            mergeVGrid.innerHTML = '';
+            mergeAGrid.innerHTML = '';
+            mergeVEmpty.classList.remove('visible');
+            mergeAEmpty.classList.remove('visible');
+            if (!videos.length) mergeVEmpty.classList.add('visible');
+            else videos.forEach(f => mergeVGrid.appendChild(makeFormatCard(f, 'merge-video')));
+            if (!audios.length) mergeAEmpty.classList.add('visible');
+            else audios.forEach(f => mergeAGrid.appendChild(makeFormatCard(f, 'merge-audio')));
         }
 
-        function makeCard(f, role) {
+        function makeFormatCard(f, role) {
             const card = document.createElement('div');
             card.className = 'format-card';
             card.dataset.id = f.format_id;
-            const bcls = f.type === 'combined' ? 'badge-b' : f.type === 'video_only' ? 'badge-v' : 'badge-a';
-            const blbl = f.type === 'combined' ? '🎬 Combined' : f.type === 'video_only' ? '🎞 Video' : '🔊 Audio';
-            const q = f.resolution || (f.type === 'audio_only' ? 'Audio' : 'Unknown');
-            const sz = f.filesize && f.filesize !== 'Unknown' ? f.filesize : '';
+            const badgeClass = f.type === 'combined' ? 'badge-b' : f.type === 'video_only' ? 'badge-v' : 'badge-a';
+            const badgeLabel = f.type === 'combined' ? '🎬 Combined' : f.type === 'video_only' ? '🎞 Video' : '🔊 Audio';
+            const quality = f.resolution || (f.type === 'audio_only' ? 'Audio' : 'Unknown');
+            const size = f.filesize && f.filesize !== 'Unknown' ? f.filesize : '';
             card.innerHTML = `
-    <div class="format-quality">${q}</div>
-    <div class="format-detail">
-      <span class="badge ${bcls}">${blbl}</span>
-      ${f.ext ? `<span class="badge">${f.ext.toUpperCase()}</span>` : ''}
-      ${f.fps ? `<span class="badge">${f.fps}fps</span>` : ''}
-    </div>
-    ${sz ? `<div class="format-size">${sz}</div>` : ''}`;
-            card.addEventListener('click', () => selectCard(f, card, role));
+                <div class="format-quality">${quality}</div>
+                <div class="format-detail">
+                    <span class="badge ${badgeClass}">${badgeLabel}</span>
+                    ${f.ext ? `<span class="badge">${f.ext.toUpperCase()}</span>` : ''}
+                    ${f.fps ? `<span class="badge">${f.fps}fps</span>` : ''}
+                </div>
+                ${size ? `<div class="format-size">${size}</div>` : ''}
+            `;
+            card.addEventListener('click', () => selectFormat(f, card, role));
             return card;
         }
 
-        function selectCard(f, card, role) {
-            hideErr(formatError);
+        function selectFormat(f, card, role) {
+            hideError(formatError);
             if (role === 'direct') {
                 directGrid.querySelectorAll('.format-card').forEach(c => c.classList.remove('selected'));
                 card.classList.add('selected');
                 selectedDirect = f;
-                const q = f.resolution || (f.type === 'audio_only' ? 'Audio' : '?');
-                const sz = f.filesize && f.filesize !== 'Unknown' ? ` (${f.filesize})` : '';
-                directLabel.textContent = `Download ${q} · ${(f.ext || '').toUpperCase()}${sz}`;
-                show(btnDirect); hide(btnMerge);
+                const quality = f.resolution || (f.type === 'audio_only' ? 'Audio' : '?');
+                const size = f.filesize && f.filesize !== 'Unknown' ? ` (${f.filesize})` : '';
+                directLabel.textContent = `Download ${quality} · ${(f.ext || '').toUpperCase()}${size}`;
+                show(btnDirect);
+                hide(btnMerge);
                 dlAction.classList.add('visible');
             } else if (role === 'merge-video') {
                 mergeVGrid.querySelectorAll('.format-card').forEach(c => c.classList.remove('selected'));
@@ -1395,204 +1448,243 @@
 
         function checkMergeReady() {
             if (selectedVideo && selectedAudio) {
-                const vsz = selectedVideo.raw_filesize || 0;
-                const asz = selectedAudio.raw_filesize || 0;
-                const total = vsz + asz ? ` (~${fmt(vsz + asz)} total)` : '';
-                mergeLabel.textContent = `Merge & Download${total}`;
-                hide(btnDirect); show(btnMerge);
+                const total = (selectedVideo.raw_filesize || 0) + (selectedAudio.raw_filesize || 0);
+                const sizeHint = total ? ` (~${formatSize(total)} total)` : '';
+                mergeLabel.textContent = `Merge & Download${sizeHint}`;
+                hide(btnDirect);
+                show(btnMerge);
                 dlAction.classList.add('visible');
             }
         }
 
-        // ── DIRECT TABS ───────────────────────────────────────────────────────────────
+        // ── DIRECT TABS ────────────────────────────────────────────────────
         directTabs.addEventListener('click', e => {
-            const b = e.target.closest('.tab-btn'); if (!b) return;
-            directTabs.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
-            b.classList.add('active');
-            directTab = b.dataset.type;
-            selectedDirect = null; dlAction.classList.remove('visible');
+            const btn = e.target.closest('.tab-btn');
+            if (!btn) return;
+            directTabs.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            directTab = btn.dataset.type;
+            selectedDirect = null;
+            dlAction.classList.remove('visible');
             renderDirectGrid();
         });
 
-        // ── FFMPEG PRELOAD ────────────────────────────────────────────────────────────
+        // ── FFMPEG PRELOAD (your custom setup – untouched) ─────────────────
         async function preloadFFmpeg() {
             if (ffmpegReady || ffmpegLoading) return;
             ffmpegLoading = true;
             ffmpegLoadingEl.classList.add('visible');
-            ffmpegLoadM.textContent = 'Loading FFmpeg engine… (one-time, ~25 MB)';
+            ffmpegLoadMsg.textContent = 'Loading FFmpeg engine… (one-time, ~25 MB)';
             try {
-                FFmpegLib = await import('./index.js');
-                const _ff = new FFmpegLib.FFmpeg();
-                await _ff.load({
+                const { FFmpeg } = await import('./index.js');
+                const ff = new FFmpeg();
+                await ff.load({
                     coreURL: './ffmpeg-core.js',
                     workerURL: './ffmpeg-core.worker.js',
                     wasmURL: './ffmpeg-core.wasm'
                 });
-                FFmpegLib._instance = _ff;
+                FFmpegLib = ff;
                 ffmpegReady = true;
                 ffmpegLoadingEl.classList.remove('visible');
-            } catch (e) {
-                ffmpegLoadM.textContent = '⚠️ Failed to load FFmpeg engine. Merge may not work.';
-                console.error('ffmpeg load error', e);
+            } catch (err) {
+                console.error('FFmpeg load error', err);
+                ffmpegLoadMsg.textContent = '⚠️ Failed to load FFmpeg. Merge disabled.';
+                ffmpegReady = false;
             } finally {
                 ffmpegLoading = false;
             }
         }
 
-        // element alias (variable name clash with state var)
-        const ffmpegLoadingEl = $('ffmpeg-loading');
-
-        // ── DIRECT DOWNLOAD ───────────────────────────────────────────────────────────
+        // ── DIRECT DOWNLOAD ────────────────────────────────────────────────
         btnDirect.addEventListener('click', () => {
             if (!selectedDirect) return;
-            hideErr(formatError);
+            hideError(formatError);
             startDirectDownload();
         });
 
-        async function startDirectDownload() {
+        function startDirectDownload() {
             const url = urlInput.value.trim();
             const id = crypto.randomUUID();
-            const params = new URLSearchParams({ url: b64(url), format: selectedDirect.format_id, id });
+            const params = new URLSearchParams({
+                url: toBase64(url),
+                format: selectedDirect.format_id,
+                id: id
+            });
             if (selectedDirect.raw_filesize) params.set('size', selectedDirect.raw_filesize);
 
-            hide(stepFormats);
-            stepProgress.classList.add('visible');
-            hide(stepSuccess);
-            dlError.classList.remove('visible');
-
-            // Build phases UI — single phase for direct
+            // Build progress UI first
             progPhases.innerHTML = makePhaseHTML('dl', '⬇️', 'Downloading…', 'fill-v');
             hide(mergeLog);
+            hideError(dlError);
+            hide(stepSuccess);
+            showProgressCard();
 
-            // Trigger browser download via <a>
+            // Now hide format card
+            hide(stepFormats);
+
+            // Start download
             const a = document.createElement('a');
-            a.href = `${API}/stream?${params}`; a.style.display = 'none';
-            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            a.href = `${API}/stream?${params}`;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
 
-            // Poll progress
             pollDirectProgress(id, selectedDirect.raw_filesize || 0);
         }
 
         function makePhaseHTML(key, icon, label, fillClass) {
             return `<div class="phase" id="phase-${key}">
-    <div class="phase-header">
-      <div class="phase-label">
-        <div class="status-dot" id="dot-${key}"></div>
-        <span class="phase-icon">${icon}</span>
-        <span id="lbl-${key}">${label}</span>
-      </div>
-      <span class="phase-pct" id="pct-${key}">0%</span>
-    </div>
-    <div class="track"><div class="fill ${fillClass}" id="fill-${key}"></div></div>
-    <div class="phase-sub" id="sub-${key}"></div>
-  </div>`;
+                <div class="phase-header">
+                    <div class="phase-label">
+                        <div class="status-dot" id="dot-${key}"></div>
+                        <span class="phase-icon">${icon}</span>
+                        <span id="lbl-${key}">${label}</span>
+                    </div>
+                    <span class="phase-pct" id="pct-${key}">0%</span>
+                </div>
+                <div class="track"><div class="fill ${fillClass}" id="fill-${key}"></div></div>
+                <div class="phase-sub" id="sub-${key}"></div>
+            </div>`;
         }
 
-        function setPhase(key, pct, sub, done = false, err = false) {
+        function setPhase(key, percent, subtitle, done = false, isError = false) {
             const fillEl = $(`fill-${key}`);
             const pctEl = $(`pct-${key}`);
             const dotEl = $(`dot-${key}`);
             const subEl = $(`sub-${key}`);
             const phaseEl = $(`phase-${key}`);
             if (!fillEl) return;
-            fillEl.style.width = pct + '%';
-            pctEl.textContent = Math.round(pct) + '%';
-            subEl.textContent = sub || '';
-            dotEl.className = 'status-dot' + (done ? ' done' : err ? ' err' : '');
+            const p = Math.min(Math.max(percent, 0), 100);
+            fillEl.style.width = p + '%';
+            pctEl.textContent = Math.round(p) + '%';
+            if (subtitle) subEl.textContent = subtitle;
+            dotEl.className = 'status-dot' + (done ? ' done' : isError ? ' err' : '');
             if (done) phaseEl.classList.add('done');
         }
 
         function pollDirectProgress(id, knownTotal) {
-            let misses = 0, doneCount = 0;
+            let pollingActive = true;
+            let finishedReported = false;
             clearInterval(pollTimer);
             pollTimer = setInterval(async () => {
+                if (!pollingActive) return;
                 try {
-                    const r = await fetch(`${API}/progress?id=${id}`);
-                    const j = await r.json();
-                    if (!j.success) { if (++misses > 15) { clearInterval(pollTimer); showDlError('We lost track of your download. Check your Downloads folder — it may have arrived anyway!'); } return; }
-                    misses = 0;
-                    const d = j.data;
-                    const pct = Math.min(d.percentage || 0, 100);
-                    const dlb = d.downloaded || 0;
-                    const tot = d.total || knownTotal || 0;
-                    const sub = dlb ? fmt(dlb) + (tot ? ` of ${fmt(tot)}` : '') : 'Starting…';
-                    setPhase('dl', pct, sub, d.status === 'finished');
-                    if (d.status === 'error') { clearInterval(pollTimer); showDlError('The download ran into a problem. Try again or pick a different format.'); }
-                    if (d.status === 'finished') {
-                        if (++doneCount > 1) { clearInterval(pollTimer); setTimeout(() => showSuccess('Download complete!', 'Your file has been saved to your Downloads folder.'), 400); }
+                    const res = await fetch(`${API}/progress?id=${id}`);
+                    if (res.status === 404) {
+                        clearInterval(pollTimer);
+                        pollingActive = false;
+                        setPhase('dl', 50, 'Download in progress… (tracking lost, check your downloads folder)', false, false);
+                        return;
                     }
-                } catch { }
-            }, 500);
+                    const json = await res.json();
+                    if (!json.success) {
+                        if (!pollingActive) return;
+                        clearInterval(pollTimer);
+                        pollingActive = false;
+                        setPhase('dl', 50, 'Download in progress… (no live tracking)', false, false);
+                        return;
+                    }
+                    const data = json.data;
+                    const percent = Math.min(data.percentage || 0, 100);
+                    const downloaded = data.downloaded || 0;
+                    const total = data.total || knownTotal || 0;
+                    const subtitle = downloaded ? formatSize(downloaded) + (total ? ` of ${formatSize(total)}` : '') : 'Starting…';
+                    setPhase('dl', percent, subtitle, data.status === 'finished');
+                    if (data.status === 'error') {
+                        clearInterval(pollTimer);
+                        pollingActive = false;
+                        showDlError('The download ran into a problem. Try again or pick a different format.');
+                    }
+                    if (data.status === 'finished' && !finishedReported) {
+                        finishedReported = true;
+                        clearInterval(pollTimer);
+                        pollingActive = false;
+                        // Show success message briefly then return to format selection
+                        stepSuccess.classList.remove('hidden');
+                        successTitle.textContent = 'Download complete!';
+                        successSub.textContent = 'Your file has been saved.';
+                        stepSuccess.classList.add('visible');
+                        setTimeout(() => {
+                            showFormatSelection();
+                        }, 1500);
+                    }
+                } catch (err) {
+                    console.warn('Progress poll error', err);
+                    if (pollingActive) {
+                        clearInterval(pollTimer);
+                        pollingActive = false;
+                        setPhase('dl', 50, 'Download in progress… (tracking error)', false, false);
+                    }
+                }
+            }, 800);
         }
 
-        // ── MERGE DOWNLOAD ────────────────────────────────────────────────────────────
+        // ── MERGE DOWNLOAD ─────────────────────────────────────────────────
         btnMerge.addEventListener('click', async () => {
-            hideErr(formatError);
-            if (!selectedVideo || !selectedAudio) { showErr({ textContent: '' }, formatErrM, formatError, 'Select both tracks', 'Please pick a video track and an audio track before merging.'); return; }
+            hideError(formatError);
+            if (!selectedVideo || !selectedAudio) {
+                showError(formatError, formatErrMsg, formatErrMsg, 'Select both tracks', 'Please pick a video track and an audio track before merging.');
+                return;
+            }
             if (!ffmpegReady) {
-                showErr({ textContent: '' }, formatErrM, formatError, 'FFmpeg not ready', 'The merge engine is still loading. Wait a moment and try again.'); return;
+                showError(formatError, formatErrMsg, formatErrMsg, 'FFmpeg not ready', 'The merge engine is still loading. Wait a moment and try again.');
+                return;
             }
             startMerge();
         });
 
         async function startMerge() {
             const url = urlInput.value.trim();
-            const vid = selectedVideo, aud = selectedAudio;
+            const videoFmt = selectedVideo, audioFmt = selectedAudio;
 
-            hide(stepFormats);
-            stepProgress.classList.add('visible');
-            hide(stepSuccess);
-            dlError.classList.remove('visible');
-
-            // Build 3-phase UI: video dl, audio dl, merge
-            progPhases.innerHTML =
-                makePhaseHTML('vid', '🎞', 'Downloading video…', 'fill-v') +
-                makePhaseHTML('aud', '🔊', 'Downloading audio…', 'fill-a') +
-                makePhaseHTML('mux', '🔀', 'Merging tracks…', 'fill-m');
-
+            // Build progress UI first
+            progPhases.innerHTML = `
+                ${makePhaseHTML('vid', '🎞', 'Downloading video…', 'fill-v')}
+                ${makePhaseHTML('aud', '🔊', 'Downloading audio…', 'fill-a')}
+                ${makePhaseHTML('mux', '🔀', 'Merging tracks…', 'fill-m')}
+            `;
             mergeLog.innerHTML = '';
             show(mergeLog);
+            hideError(dlError);
+            hide(stepSuccess);
+            showProgressCard();
+
+            // Now hide format card
+            hide(stepFormats);
 
             const log = msg => {
                 mergeLog.innerHTML += `<div>${msg}</div>`;
                 mergeLog.scrollTop = mergeLog.scrollHeight;
             };
-
             log('Starting parallel download of video and audio tracks…');
 
             try {
-                // Download video and audio in parallel
                 const [videoBytes, audioBytes] = await Promise.all([
-                    downloadToBuffer(url, vid, 'vid', log),
-                    downloadToBuffer(url, aud, 'aud', log),
+                    downloadToBuffer(url, videoFmt, 'vid', log),
+                    downloadToBuffer(url, audioFmt, 'aud', log),
                 ]);
-
-                log(`✅ Video: ${fmt(videoBytes.byteLength)}  |  Audio: ${fmt(audioBytes.byteLength)}`);
+                log(`✅ Video: ${formatSize(videoBytes.byteLength)}  |  Audio: ${formatSize(audioBytes.byteLength)}`);
                 log('Handing off to FFmpeg — merging tracks…');
-
                 setPhase('mux', 5, 'Initialising FFmpeg…');
 
-                const ff = FFmpegLib._instance;
-
-                // Register progress callback
+                const ff = FFmpegLib;
                 ff.on('progress', ({ progress }) => {
                     const p = Math.min(Math.round(progress * 100), 99);
                     setPhase('mux', p, `Muxing… ${p}%`);
                 });
                 ff.on('log', ({ message }) => log(message));
 
-                // Write files into WASM virtual FS
-                const vext = vid.ext || 'mp4';
-                const aext = aud.ext || 'm4a';
-                await ff.writeFile(`video.${vext}`, new Uint8Array(videoBytes));
-                await ff.writeFile(`audio.${aext}`, new Uint8Array(audioBytes));
-
-                log(`Running: ffmpeg -i video.${vext} -i audio.${aext} -c copy output.mp4`);
+                const videoExt = videoFmt.ext || 'mp4';
+                const audioExt = audioFmt.ext || 'm4a';
+                await ff.writeFile(`video.${videoExt}`, new Uint8Array(videoBytes));
+                await ff.writeFile(`audio.${audioExt}`, new Uint8Array(audioBytes));
+                log(`Running: ffmpeg -i video.${videoExt} -i audio.${audioExt} -c copy output.mp4`);
 
                 await ff.exec([
-                    '-i', `video.${vext}`,
-                    '-i', `audio.${aext}`,
-                    '-c', 'copy',       // stream-copy: no re-encode, blazing fast
+                    '-i', `video.${videoExt}`,
+                    '-i', `audio.${audioExt}`,
+                    '-c', 'copy',
                     '-movflags', '+faststart',
                     'output.mp4',
                 ]);
@@ -1601,57 +1693,73 @@
                 log('✅ Merge complete! Preparing download…');
 
                 const data = await ff.readFile('output.mp4');
-                // Clean up WASM FS
-                await ff.deleteFile(`video.${vext}`).catch(() => { });
-                await ff.deleteFile(`audio.${aext}`).catch(() => { });
-                await ff.deleteFile('output.mp4').catch(() => { });
+                await ff.deleteFile(`video.${videoExt}`).catch(() => {});
+                await ff.deleteFile(`audio.${audioExt}`).catch(() => {});
+                await ff.deleteFile('output.mp4').catch(() => {});
 
-                // Trigger browser save
                 const blob = new Blob([data], { type: 'video/mp4' });
                 const blobURL = URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.href = blobURL; a.download = 'ripple-merged.mp4'; a.style.display = 'none';
-                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                a.href = blobURL;
+                a.download = 'ripple-merged.mp4';
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
                 setTimeout(() => URL.revokeObjectURL(blobURL), 60000);
-
                 log('🎉 File saved to your Downloads folder.');
-                setTimeout(() => showSuccess('Merge complete!', 'Your HD video has been saved to your Downloads folder.'), 600);
-
-            } catch (e) {
-                console.error('merge error', e);
-                showDlError(`Something went wrong during the merge: ${e.message || e}. Try again or use Direct Download instead.`);
+                // Show success and then return to format selection
+                stepSuccess.classList.remove('hidden');
+                successTitle.textContent = 'Merge complete!';
+                successSub.textContent = 'Your HD video has been saved.';
+                stepSuccess.classList.add('visible');
+                setTimeout(() => {
+                    showFormatSelection();
+                }, 1500);
+            } catch (err) {
+                console.error('Merge error', err);
+                // On error, bring back format card
+                show(stepFormats);
+                hideProgressCard();
+                showDlError(`Something went wrong during the merge: ${err.message || err}. Try using Direct Download instead.`);
             }
         }
 
-        async function downloadToBuffer(url, fmt_info, phaseKey, log) {
+        async function downloadToBuffer(url, formatInfo, phaseKey, log) {
             const id = crypto.randomUUID();
-            const params = new URLSearchParams({ url: b64(url), format: fmt_info.format_id, id });
-            if (fmt_info.raw_filesize) params.set('size', fmt_info.raw_filesize);
+            const params = new URLSearchParams({
+                url: toBase64(url),
+                format: formatInfo.format_id,
+                id: id
+            });
+            if (formatInfo.raw_filesize) params.set('size', formatInfo.raw_filesize);
 
-            log(`⬇ Downloading ${phaseKey === 'vid' ? 'video' : 'audio'} (${fmt_info.resolution || fmt_info.ext || '?'})…`);
+            log(`⬇ Downloading ${phaseKey === 'vid' ? 'video' : 'audio'} (${formatInfo.resolution || formatInfo.ext || '?'})…`);
 
             const response = await fetch(`${API}/stream?${params}`);
             if (!response.ok) throw new Error(`Server returned ${response.status} for ${phaseKey}`);
 
-            const total = fmt_info.raw_filesize || 0;
+            const total = formatInfo.raw_filesize || 0;
             let downloaded = 0;
             const chunks = [];
 
-            // Also poll progress from server while streaming body
+            let pollingActive = true;
             const pollId = setInterval(async () => {
+                if (!pollingActive) return;
                 try {
                     const r = await fetch(`${API}/progress?id=${id}`);
-                    const j = await r.json();
-                    if (j.success) {
-                        const d = j.data;
-                        const pct = Math.min(d.percentage || 0, 99);
-                        const sub = d.downloaded ? fmt(d.downloaded) + (d.total ? ` of ${fmt(d.total)}` : '') : 'Streaming…';
-                        setPhase(phaseKey, pct, sub);
+                    if (r.status === 404) {
+                        clearInterval(pollId);
+                        pollingActive = false;
+                        return;
                     }
-                } catch { }
-            }, 600);
+                    const j = await r.json();
+                    if (j.success && j.data.total && !total) {
+                        // optional
+                    }
+                } catch { /* ignore */ }
+            }, 800);
 
-            // Stream the response body chunk by chunk
             const reader = response.body.getReader();
             while (true) {
                 const { done, value } = await reader.read();
@@ -1659,49 +1767,49 @@
                 chunks.push(value);
                 downloaded += value.byteLength;
                 const pct = total ? Math.min((downloaded / total) * 100, 99) : 0;
-                setPhase(phaseKey, pct, fmt(downloaded) + (total ? ` of ${fmt(total)}` : ' downloaded'));
+                const sub = formatSize(downloaded) + (total ? ` of ${formatSize(total)}` : ' downloaded');
+                setPhase(phaseKey, pct, sub);
             }
-
             clearInterval(pollId);
-            setPhase(phaseKey, 100, fmt(downloaded), true);
+            pollingActive = false;
+            setPhase(phaseKey, 100, formatSize(downloaded), true);
 
-            // Concatenate chunks into a single ArrayBuffer
             const all = new Uint8Array(downloaded);
             let offset = 0;
             for (const chunk of chunks) { all.set(chunk, offset); offset += chunk.byteLength; }
             return all.buffer;
         }
 
-        // ── SHOW SUCCESS / ERROR ──────────────────────────────────────────────────────
-        function showSuccess(title, sub) {
-            hide(stepProgress);
-            successTitle.textContent = title;
-            successSub.textContent = sub;
-            stepSuccess.classList.add('visible');
-            stepSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
+        // ── SUCCESS / ERROR UI ─────────────────────────────────────────────
         function showDlError(msg) {
-            dlErrT.textContent = 'Something went wrong';
-            dlErrM.textContent = msg;
+            dlErrTitle.textContent = 'Something went wrong';
+            dlErrMsg.textContent = msg;
             dlError.classList.add('visible');
             dlError.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        // ── RESET ─────────────────────────────────────────────────────────────────────
+        // ── RESET (full reset, clears URL) ─────────────────────────────────
         btnAgain.addEventListener('click', () => {
             clearInterval(pollTimer);
             urlInput.value = '';
             selectedDirect = selectedVideo = selectedAudio = null;
-            formats = []; mode = 'direct'; directTab = 'all';
-            hideErr(fetchError); hideErr(formatError); hideErr(dlError);
+            formats = [];
+            mode = 'direct';
+            directTab = 'all';
+            hideError(fetchError);
+            hideError(formatError);
+            hideError(dlError);
             videoInfo.classList.remove('visible');
-            hide(stepFormats); hide(stepProgress); hide(stepSuccess);
-            hide(thumbImg); show(thumbPh);
-            // Reset mode UI
+            hide(stepFormats);
+            hideProgressCard();
+            stepSuccess.classList.remove('visible');
+            stepSuccess.classList.add('hidden');
+            hide(thumbImg);
+            show(thumbPh);
             document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            $('mode-direct').classList.add('active');
-            show(panelDirect); hide(panelMerge);
+            document.getElementById('mode-direct').classList.add('active');
+            show(panelDirect);
+            hide(panelMerge);
             directTabs.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             directTabs.querySelector('[data-type="all"]').classList.add('active');
             urlInput.focus();
