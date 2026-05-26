@@ -4,1024 +4,1710 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="https://raw.githubusercontent.com/yt-dlp/yt-dlp/master/.github/banner.svg" type="image/svg">
-    <title>VIDEO DOWNLOADER NO BULLSHIT</title>
+    <title>Ripple — Download Anything</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+        rel="stylesheet">
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap");
-
-        :root {
-            --bg-primary: #1b0143;
-            --bg-secondary: #2e0073;
-            --accent: #ffc800;
-            --accent-danger: #ff0055;
-            --text: #ffffff;
-            --text-muted: #6b40b5;
-            --card-bg: #151f32;
-            --border-color: #1e293b;
-            --badge-broken-bg: #7f1d1d;
-            --badge-broken-text: #fca5a5;
-            --badge-netrc-bg: #0c4a6e;
-            --badge-netrc-text: #bae6fd;
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
         }
 
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            color: var(--text);
-            font-family: "Oswald", sans-serif;
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface2: #1a1a26;
+            --surface3: #22223a;
+            --border: rgba(255, 255, 255, 0.07);
+            --border2: rgba(255, 255, 255, 0.13);
+            --text: #f0f0f8;
+            --muted: #8888a8;
+            --accent: #6c63ff;
+            --accent2: #a78bfa;
+            --accent3: #38bdf8;
+            --success: #34d399;
+            --error: #f87171;
+            --warn: #fbbf24;
+            --glow: rgba(108, 99, 255, 0.18);
+            --font-head: 'Syne', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --r: 16px;
+            --rs: 10px;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth
         }
 
         body {
-            background-color: var(--bg-secondary);
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-weight: 400;
+            line-height: 1.6;
             min-height: 100dvh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
+            overflow-x: hidden
         }
 
-        .top_menu {
-            padding: clamp(15px, 4vw, 30px) 15px;
-            background-color: var(--bg-primary);
-            font-size: clamp(1.2rem, 4vw, 1.5rem);
-            text-align: center;
-            font-weight: 900;
-            letter-spacing: 0.2rem;
-            user-select: none;
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: .5
         }
 
-        .top_menu > a {
-            all: unset;
-            cursor: pointer;
-            transition: color 0.3s ease;
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: .32;
+            animation: drift 18s ease-in-out infinite
         }
 
-        .top_menu > a:hover {
-            color: var(--accent);
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: #6c63ff;
+            top: -150px;
+            left: -100px;
+            animation-delay: 0s
         }
 
-        .main_section {
-            flex: 1;
-            padding: clamp(15px, 5vw, 40px) 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: clamp(1.5rem, 5vw, 3rem);
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: #38bdf8;
+            bottom: -100px;
+            right: -80px;
+            animation-delay: -7s
         }
 
-        .console_box {
-            width: 100%;
-            max-width: 800px;
-            background: var(--bg-primary);
-            border-radius: 12px;
-            padding: clamp(12px, 3vw, 20px);
-            border: 2px solid #4300a7;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: #a78bfa;
+            top: 40%;
+            left: 40%;
+            animation-delay: -13s
         }
 
-        .console_header {
-            font-size: 0.9rem;
-            letter-spacing: 0.1rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 5px;
+        @keyframes drift {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1)
+            }
+
+            33% {
+                transform: translate(30px, -20px) scale(1.05)
+            }
+
+            66% {
+                transform: translate(-20px, 30px) scale(.95)
+            }
         }
 
-        .console_status {
-            font-weight: bold;
-            animation: pulse 1.5s infinite alternate;
-        }
-
-        .console_progress_bar {
-            width: 100%;
-            height: 6px;
-            background: #0f0026;
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-
-        .console_progress_fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--accent), #00ff1e);
-            transition: width 0.3s ease;
-        }
-
-        .form_section {
-            display: flex;
-            flex-direction: column;
-            gap: clamp(1rem, 3vw, 1.5rem);
-            align-items: center;
-            width: 100%;
-        }
-
-        .form_title {
-            font-size: clamp(1.1rem, 3vw, 1.4rem);
-            text-align: center;
-            letter-spacing: 0.1rem;
-            padding: 0 10px;
-        }
-
-        .form_input_wrapper {
+        .app {
             position: relative;
-            width: 100%;
-            max-width: 800px;
-        }
-
-        .form_input_wrapper > input {
-            all: unset;
-            padding: clamp(14px, 3vw, 18px) 20px;
-            width: 100%;
-            border-radius: 50px;
-            background-color: var(--bg-primary);
-            font-size: clamp(1rem, 3vw, 1.1rem);
-            border: 2px solid transparent;
-            transition: border-color 0.3s ease;
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        .form_input_wrapper > input:focus {
-            border-color: #5400d0;
-        }
-
-        .form_input_wrapper > input::placeholder {
-            color: var(--text-muted);
-            font-weight: 900;
-            text-align: center;
-            letter-spacing: 0.1rem;
-        }
-
-        .submit_btn_container {
-            width: 100%;
-            max-width: 240px;
+            z-index: 1;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
             display: flex;
-            justify-content: center;
-        }
-
-        #form_button {
-            all: unset;
-            background-color: #000000;
-            padding: 12px 0;
-            width: 100%;
-            text-align: center;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 900;
-            letter-spacing: 0.2rem;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #form_button:hover:not(:disabled) {
-            transform: scale(1.03);
-            background: #0a0a0a;
-        }
-
-        #form_button:disabled {
-            opacity: 0.2;
-            cursor: not-allowed;
-        }
-
-        .quality_table {
-            display: none;
             flex-direction: column;
-            width: 100%;
-            max-width: 800px;
-            background: var(--bg-primary);
-            border-radius: 12px;
-            padding: clamp(15px, 4vw, 25px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            gap: 32px
         }
 
-        .table_title {
-            font-size: clamp(1.2rem, 3vw, 1.4rem);
-            font-weight: bold;
-            color: var(--accent);
-            border-bottom: 2px solid #4300a7;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            word-break: break-word;
+        header {
+            text-align: center
         }
 
-        .table_header {
-            font-size: 1.1rem;
-            letter-spacing: 0.1rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 15px;
-        }
-
-        .row {
-            display: grid;
-            grid-template-columns: 2fr 2fr 1.5fr 1fr 1.5fr;
+        .logo-mark {
+            display: inline-flex;
             align-items: center;
-            padding: 12px 5px;
             gap: 10px;
+            margin-bottom: 20px
         }
 
-        .col {
-            font-size: 1.1rem;
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent3));
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 18px;
+            box-shadow: 0 0 24px var(--glow)
+        }
+
+        .logo-text {
+            font-family: var(--font-head);
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -.02em;
+            background: linear-gradient(135deg, var(--text), var(--muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text
+        }
+
+        h1 {
+            font-family: var(--font-head);
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 800;
+            letter-spacing: -.04em;
+            line-height: 1.1;
+            background: linear-gradient(135deg, var(--text) 30%, var(--muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 14px
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            color: var(--muted);
+            font-weight: 300;
+            max-width: 480px;
+            margin: 0 auto;
+            letter-spacing: .01em
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 28px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            transition: border-color .3s
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(108, 99, 255, .04) 0%, transparent 60%);
+            pointer-events: none
+        }
+
+        /* input */
+        .input-group {
+            display: flex;
+            gap: 12px;
+            align-items: stretch
+        }
+
+        .url-wrap {
+            flex: 1;
+            position: relative
+        }
+
+        .url-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: 18px;
+            pointer-events: none;
+            transition: color .2s
+        }
+
+        .url-input {
+            width: 100%;
+            background: var(--surface2);
+            border: 1.5px solid var(--border2);
+            border-radius: var(--rs);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: .95rem;
+            padding: 14px 16px 14px 46px;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s
+        }
+
+        .url-input::placeholder {
+            color: var(--muted)
+        }
+
+        .url-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, .15)
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #5b52e8);
+            border: none;
+            border-radius: var(--rs);
+            color: #fff;
+            font-family: var(--font-head);
+            font-size: .9rem;
+            font-weight: 600;
+            letter-spacing: .02em;
+            padding: 14px 24px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: transform .15s, box-shadow .15s, opacity .15s;
+            box-shadow: 0 4px 20px rgba(108, 99, 255, .35);
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 28px rgba(108, 99, 255, .5)
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0)
+        }
+
+        .btn-primary:disabled {
+            opacity: .5;
+            cursor: not-allowed
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, .3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+            display: none
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .loading .spinner {
+            display: block
+        }
+
+        .loading .btn-label {
+            display: none
+        }
+
+        /* error banner */
+        .error-banner {
+            display: none;
+            background: rgba(248, 113, 113, .1);
+            border: 1px solid rgba(248, 113, 113, .3);
+            border-radius: var(--rs);
+            padding: 16px 18px;
+            gap: 14px;
+            align-items: flex-start;
+            margin-top: 16px;
+            animation: slideDown .25s ease
+        }
+
+        .error-banner.visible {
+            display: flex
+        }
+
+        .error-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 1px
+        }
+
+        .error-title {
+            font-family: var(--font-head);
+            font-size: .9rem;
+            font-weight: 700;
+            color: var(--error);
+            margin-bottom: 3px
+        }
+
+        .error-msg {
+            font-size: .875rem;
+            color: rgba(248, 113, 113, .85);
+            line-height: 1.5
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        /* video info */
+        .video-info {
+            display: none;
+            gap: 18px;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            animation: fadeIn .3s ease
+        }
+
+        .video-info.visible {
+            display: flex
+        }
+
+        .video-thumb {
+            width: 100px;
+            height: 64px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+            background: var(--surface2)
+        }
+
+        .thumb-ph {
+            width: 100px;
+            height: 64px;
+            border-radius: 8px;
+            flex-shrink: 0;
+            background: var(--surface2);
+            display: grid;
+            place-items: center;
+            color: var(--muted);
+            font-size: 24px
+        }
+
+        .video-meta {
+            flex: 1;
+            min-width: 0
+        }
+
+        .video-title {
+            font-family: var(--font-head);
+            font-size: .95rem;
+            font-weight: 700;
+            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
+            margin-bottom: 4px
         }
 
-        .col_action {
-            text-align: right;
+        .video-dur {
+            font-size: .82rem;
+            color: var(--muted)
         }
 
-        .col_action > button {
-            all: unset;
-            cursor: pointer;
-            color: var(--accent);
-            font-weight: bold;
-            letter-spacing: 0.05rem;
-            transition: color 0.2s ease, letter-spacing 0.2s ease;
-        }
-
-        .col_action > button:hover:not(:disabled) {
-            color: var(--accent-danger);
-            letter-spacing: 0.12rem;
-        }
-
-        .col_action > button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .vertical_line {
-            height: 1px;
-            width: 100%;
-            background-color: #4300a7;
-        }
-
-        .table_footer_note {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: var(--accent);
-            opacity: 0.8;
-            text-align: center;
-        }
-
-        .supported_sites_section {
-            display: none;
-            flex-direction: column;
-            width: 100%;
-            max-width: 1000px;
-            gap: 1.5rem;
-        }
-
-        .sites_header {
-            text-align: center;
-            background: var(--bg-primary);
-            padding: clamp(1.5rem, 4vw, 2.5rem) 1rem;
-            border-radius: 12px;
-            border: 2px solid #4300a7;
-        }
-
-        .sites_header h2 {
-            font-size: clamp(1.5rem, 5vw, 2rem);
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-
-        .sites_header p {
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            font-size: 1rem;
-        }
-
-        .search_container {
-            max-width: 500px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .search_container > input {
-            all: unset;
-            width: 100%;
-            padding: 12px 20px;
-            background: var(--bg-secondary);
-            border: 2px solid #4300a7;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            color: var(--text);
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        .search_container > input:focus {
-            border-color: var(--accent);
-        }
-
-        .search_container > input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .site_list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1rem;
-            list-style: none;
-            width: 100%;
-        }
-
-        .site_item {
-            background-color: var(--bg-primary);
-            border: 2px solid #4300a7;
-            border-radius: 8px;
-            padding: 1.25rem;
+        /* mode toggle */
+        .mode-row {
             display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap
         }
 
-        .site_name {
-            font-weight: bold;
-            font-size: 1.2rem;
+        .mode-btn {
+            flex: 1;
+            min-width: 160px;
+            background: var(--surface2);
+            border: 1.5px solid var(--border2);
+            border-radius: var(--rs);
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: all .2s;
+            text-align: left;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start
+        }
+
+        .mode-btn.active {
+            border-color: var(--accent);
+            background: rgba(108, 99, 255, .1)
+        }
+
+        .mode-icon {
+            font-size: 22px;
+            flex-shrink: 0;
+            line-height: 1
+        }
+
+        .mode-title {
+            font-family: var(--font-head);
+            font-size: .88rem;
+            font-weight: 700;
             color: var(--text);
-            word-break: break-all;
+            margin-bottom: 2px
         }
 
-        .site_desc {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            word-break: break-word;
+        .mode-desc {
+            font-size: .76rem;
+            color: var(--muted);
+            line-height: 1.4
+        }
+
+        .mode-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--accent3));
+            color: #fff;
+            font-size: .65rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            padding: 2px 7px;
+            border-radius: 99px;
+            margin-left: 6px;
+            vertical-align: middle
+        }
+
+        /* section label */
+        .section-label {
+            font-family: var(--font-head);
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 14px
+        }
+
+        /* tabs */
+        .format-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap
+        }
+
+        .tab-btn {
+            background: var(--surface2);
+            border: 1.5px solid var(--border2);
+            border-radius: 8px;
+            color: var(--muted);
+            font-family: var(--font-body);
+            font-size: .82rem;
+            font-weight: 500;
+            padding: 7px 16px;
+            cursor: pointer;
+            transition: all .2s
+        }
+
+        .tab-btn.active {
+            background: rgba(108, 99, 255, .15);
+            border-color: var(--accent);
+            color: var(--accent2)
+        }
+
+        /* format grid */
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 4px
+        }
+
+        .format-grid::-webkit-scrollbar {
+            width: 4px
+        }
+
+        .format-grid::-webkit-scrollbar-track {
+            background: transparent
+        }
+
+        .format-grid::-webkit-scrollbar-thumb {
+            background: var(--border2);
+            border-radius: 4px
+        }
+
+        .format-card {
+            background: var(--surface2);
+            border: 1.5px solid var(--border);
+            border-radius: var(--rs);
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: all .2s;
+            position: relative
+        }
+
+        .format-card:hover {
+            border-color: var(--border2);
+            background: rgba(255, 255, 255, .04)
+        }
+
+        .format-card.selected {
+            border-color: var(--accent);
+            background: rgba(108, 99, 255, .1);
+            box-shadow: 0 0 0 1px var(--accent) inset
+        }
+
+        .format-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 11px;
+            color: #fff;
+            font-weight: 700
+        }
+
+        .format-quality {
+            font-family: var(--font-head);
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px
+        }
+
+        .format-detail {
+            font-size: .78rem;
+            color: var(--muted);
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 6px
         }
 
         .badge {
-            display: inline-block;
-            padding: 2px 8px;
-            font-size: 0.75rem;
-            font-weight: bold;
+            background: var(--surface);
+            border: 1px solid var(--border2);
             border-radius: 4px;
-            text-transform: uppercase;
-            width: fit-content;
+            padding: 2px 7px;
+            font-size: .72rem;
+            font-weight: 500;
+            letter-spacing: .03em
         }
 
-        .badge.broken { background-color: var(--badge-broken-bg); color: var(--badge-broken-text); }
-        .badge.netrc { background-color: var(--badge-netrc-bg); color: var(--badge-netrc-text); }
-
-        .loading_sites {
-            text-align: center;
-            font-size: 1.3rem;
-            color: var(--accent);
-            padding: 2rem;
+        .badge-v {
+            color: var(--accent2);
+            border-color: rgba(167, 139, 250, .3)
         }
 
-        .footer {
+        .badge-a {
+            color: var(--accent3);
+            border-color: rgba(56, 189, 248, .3)
+        }
+
+        .badge-b {
+            color: var(--success);
+            border-color: rgba(52, 211, 153, .3)
+        }
+
+        .format-size {
+            font-size: .8rem;
+            color: var(--muted);
+            margin-top: 6px
+        }
+
+        /* merge pair selector */
+        .merge-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px
+        }
+
+        @media(max-width:560px) {
+            .merge-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .merge-col label.section-label {
+            margin-bottom: 10px;
+            display: block
+        }
+
+        .merge-col .format-grid {
+            max-height: 220px
+        }
+
+        /* download / merge buttons */
+        .download-action {
+            display: none;
+            margin-top: 20px;
+            animation: fadeIn .3s ease
+        }
+
+        .download-action.visible {
+            display: block
+        }
+
+        .btn-download {
+            width: 100%;
+            background: linear-gradient(135deg, var(--success), #059669);
+            border: none;
+            border-radius: var(--rs);
+            color: #fff;
+            font-family: var(--font-head);
             font-size: 1rem;
-            background-color: var(--bg-primary);
-            padding: 25px 15px;
-            user-select: none;
-            display: flex;
-            line-height: 1.5rem;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            border-top: 2px solid #4300a7;
-            text-align: center;
-            gap: 4px;
-        }
-
-        .yt_dlp_link, .nav_toggle_btn {
-            color: #ffc800;
+            font-weight: 700;
+            letter-spacing: .02em;
+            padding: 16px 24px;
             cursor: pointer;
-            font-weight: bold;
-            text-decoration: underline;
+            transition: transform .15s, box-shadow .15s, opacity .15s;
+            box-shadow: 0 4px 24px rgba(52, 211, 153, .3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px
         }
 
-        #toast_container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            left: 20px;
-            max-width: 400px;
-            margin-left: auto;
+        .btn-download:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 32px rgba(52, 211, 153, .45)
+        }
+
+        .btn-download:disabled {
+            opacity: .5;
+            cursor: not-allowed
+        }
+
+        .btn-merge {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--accent3));
+            border: none;
+            border-radius: var(--rs);
+            color: #fff;
+            font-family: var(--font-head);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: .02em;
+            padding: 16px 24px;
+            cursor: pointer;
+            transition: transform .15s, box-shadow .15s, opacity .15s;
+            box-shadow: 0 4px 24px rgba(108, 99, 255, .35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px
+        }
+
+        .btn-merge:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 32px rgba(108, 99, 255, .5)
+        }
+
+        .btn-merge:disabled {
+            opacity: .5;
+            cursor: not-allowed
+        }
+
+        /* progress */
+        .progress-card {
+            display: none
+        }
+
+        .progress-card.visible {
+            display: block;
+            animation: fadeIn .3s ease
+        }
+
+        .prog-phases {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            z-index: 9999;
+            gap: 16px
         }
 
-        .toast {
-            background: #000;
-            border-left: 4px solid var(--accent);
-            padding: 12px 20px;
-            border-radius: 4px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            font-size: 1rem;
-            letter-spacing: 0.05rem;
-            animation: slideIn 0.3s ease forwards;
+        .phase {
+            display: grid;
+            gap: 8px
         }
 
-        .toast.error { border-left-color: var(--accent-danger); }
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
 
-        .loader {
-            width: fit-content;
-            font-weight: bold;
-            font-family: monospace;
-            white-space: pre;
-            font-size: 1rem;
-            line-height: 1.2em;
-            height: 1.2em;
+        .phase-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-head);
+            font-size: .85rem;
+            font-weight: 700
+        }
+
+        .phase-icon {
+            font-size: 16px
+        }
+
+        .phase-pct {
+            font-family: var(--font-head);
+            font-size: .95rem;
+            font-weight: 800;
+            color: var(--accent2)
+        }
+
+        .track {
+            height: 5px;
+            background: var(--surface2);
+            border-radius: 99px;
             overflow: hidden;
-        }
-        .loader:before {
-            content:"Loading...\A⌰oading...\A⌰⍜ading...\A⌰⍜⏃ding...\A⌰⍜⏃⎅ing...\A⌰⍜⏃⎅⟟ng...\A⌰⍜⏃⎅⟟⋏g...\A⌰⍜⏃⎅⟟⋏☌...\A⌰⍜⏃⎅⟟⋏☌⟒..\A⌰⍜⏃⎅⟟⋏☌⟒⏁.\A⌰⍜⏃⎅⟟⋏☌⟒⏁⋔"; 
-            white-space: pre;
-            display: inline-block;
-            animation: l39 1s infinite steps(11) alternate;
+            border: 1px solid var(--border)
         }
 
-        @keyframes l39 { 100%{transform: translateY(-100%)} }
-        @keyframes pulse { to { opacity: 0.5; } }
-        @keyframes slideIn {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .fill {
+            height: 100%;
+            border-radius: 99px;
+            transition: width .4s cubic-bezier(.4, 0, .2, 1);
+            width: 0%
         }
 
-        /* Responsive Mobile Layout Overrides */
-        @media screen and (max-width: 600px) {
-            .main_section {
-                padding: 15px 10px;
-                gap: 1.25rem;
+        .fill-v {
+            background: linear-gradient(90deg, var(--accent2), var(--accent))
+        }
+
+        .fill-a {
+            background: linear-gradient(90deg, var(--accent3), #0ea5e9)
+        }
+
+        .fill-m {
+            background: linear-gradient(90deg, var(--accent), var(--accent3))
+        }
+
+        .phase-sub {
+            font-size: .78rem;
+            color: var(--muted)
+        }
+
+        .phase.done .fill {
+            width: 100% !important
+        }
+
+        .phase.done .phase-pct {
+            color: var(--success)
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pdot 1.5s ease-in-out infinite;
+            flex-shrink: 0
+        }
+
+        .status-dot.done {
+            background: var(--success);
+            animation: none
+        }
+
+        .status-dot.err {
+            background: var(--error);
+            animation: none
+        }
+
+        @keyframes pdot {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1)
             }
 
-            .quality_table {
-                padding: 15px 10px;
+            50% {
+                opacity: .4;
+                transform: scale(.65)
+            }
+        }
+
+        .merge-log {
+            margin-top: 16px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--rs);
+            padding: 14px 16px;
+            max-height: 120px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: .75rem;
+            color: var(--muted);
+            line-height: 1.6;
+            display: none
+        }
+
+        .merge-log.visible {
+            display: block
+        }
+
+        .merge-log::-webkit-scrollbar {
+            width: 4px
+        }
+
+        .merge-log::-webkit-scrollbar-thumb {
+            background: var(--border2);
+            border-radius: 4px
+        }
+
+        /* success */
+        .success-card {
+            display: none;
+            text-align: center;
+            padding: 32px
+        }
+
+        .success-card.visible {
+            display: block;
+            animation: fadeIn .4s ease
+        }
+
+        .success-icon {
+            width: 72px;
+            height: 72px;
+            background: rgba(52, 211, 153, .12);
+            border: 2px solid rgba(52, 211, 153, .3);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            animation: pop .4s cubic-bezier(.34, 1.56, .64, 1)
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(.5);
+                opacity: 0
             }
 
-            .row {
-                display: flex;
-                flex-direction: column;
-                align-items: stretch;
-                background: rgba(0, 0, 0, 0.25);
-                border: 1px solid #4300a7;
-                border-radius: 8px;
-                padding: 12px;
-                margin-bottom: 0px;
-                gap: 6px;
+            to {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
+
+        .success-title {
+            font-family: var(--font-head);
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--success)
+        }
+
+        .success-sub {
+            font-size: .875rem;
+            color: var(--muted);
+            margin-bottom: 24px
+        }
+
+        .btn-again {
+            background: var(--surface2);
+            border: 1.5px solid var(--border2);
+            border-radius: var(--rs);
+            color: var(--text);
+            font-family: var(--font-head);
+            font-size: .875rem;
+            font-weight: 600;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all .2s
+        }
+
+        .btn-again:hover {
+            border-color: var(--accent);
+            color: var(--accent2)
+        }
+
+        /* empty */
+        .empty-formats {
+            text-align: center;
+            padding: 28px;
+            color: var(--muted);
+            font-size: .875rem;
+            display: none
+        }
+
+        .empty-formats.visible {
+            display: block
+        }
+
+        /* hints */
+        .hints {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center
+        }
+
+        .hint-pill {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 99px;
+            padding: 6px 14px;
+            font-size: .78rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        /* ffmpeg loader overlay */
+        .ffmpeg-loading {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: rgba(108, 99, 255, .08);
+            border: 1px solid rgba(108, 99, 255, .2);
+            border-radius: var(--rs);
+            margin-top: 16px;
+            font-size: .85rem;
+            color: var(--accent2)
+        }
+
+        .ffmpeg-loading.visible {
+            display: flex
+        }
+
+        .ffmpeg-loading .spinner {
+            display: block;
+            border-color: rgba(167, 139, 250, .3);
+            border-top-color: var(--accent2)
+        }
+
+        @media(max-width:560px) {
+            .app {
+                padding: 32px 16px 60px
             }
 
-            .col {
-                font-size: 1.1rem;
-                text-align: center;
-                white-space: normal;
-                word-break: break-word;
+            .input-group {
+                flex-direction: column
             }
 
-            .col:nth-child(1) {
-                font-size: 1.25rem;
-                font-weight: 700;
-                color: var(--accent);
-            }
-            .col:nth-child(1)::before { content: "RESOLUTION: "; color: var(--text-muted); font-size: 0.9rem; font-weight: 400; }
-            
-            .col:nth-child(3)::before { content: "SIZE: "; color: var(--text-muted); font-size: 0.9rem; }
-
-            .col_hide_mobile {
-                display: block !important;
-            }
-            .col:nth-child(2)::before { content: "TYPE: "; color: var(--text-muted); font-size: 0.9rem; }
-            .col:nth-child(4)::before { content: "EXT: "; color: var(--text-muted); font-size: 0.9rem; }
-
-            .col_action {
-                text-align: center;
-                margin-top: 6px;
-                padding-top: 8px;
-                border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            .btn-primary {
+                justify-content: center
             }
 
-            .col_action > button {
-                display: block;
-                width: 100%;
-                background: var(--accent);
-                color: #000;
-                padding: 10px;
-                border-radius: 6px;
-                text-align: center;
-                font-weight: 900;
-                letter-spacing: 0.1rem;
+            .format-grid {
+                grid-template-columns: 1fr
             }
 
-            .col_action > button:hover {
-                background: #fff;
-                color: #000;
+            .mode-row {
+                flex-direction: column
             }
+        }
 
-            .vertical_line {
-                display: none;
-            }
-
-            .site_list {
-                grid-template-columns: 1fr;
-            }
-
-            .submit_btn_container {
-                max-width: 100%;
-            }
+        .hidden {
+            display: none !important
         }
     </style>
 </head>
 
 <body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
 
-    <div class="top_menu">
-        <a href="#" onclick="switchView('downloader')">VIDEO DOWNLOADER NO BULLSHIT</a>
-    </div>
-
-    <div class="main_section" id="view_downloader">
-        <div class="console_box">
-            <div class="console_header">
-                <span>System Engine Output</span>
-                <span class="console_status" id="engine_status">Waking engines...</span>
+    <div class="app">
+        <!-- HEADER -->
+        <header>
+            <div class="logo-mark">
+                <div class="logo-icon">⬇</div>
+                <span class="logo-text">Ripple</span>
             </div>
-            <div id="console_text" style="font-family: monospace; font-size: 0.9rem; color: #00ff1e; min-height: 20px;">
-                Initializing environment loops...
-            </div>
-            <div class="console_progress_bar">
-                <div class="console_progress_fill" id="progress_fill"></div>
-            </div>
-        </div>
+            <h1>Download anything,<br>beautifully.</h1>
+            <p class="subtitle">Paste any video link and get exactly the quality you want.</p>
+        </header>
 
-        <div class="form_section">
-            <div class="form_title">
-                <p>DOWNLOAD VIDEO FROM ANY <span class="nav_toggle_btn" onclick="switchView('sites')">SUPPORTED WEBSITES</span></p>
+        <!-- STEP 1: URL -->
+        <div class="card" id="step-url">
+            <div class="input-group">
+                <div class="url-wrap">
+                    <span class="url-icon">🔗</span>
+                    <input class="url-input" id="url-input" type="url" placeholder="Paste a video link here…"
+                        autocomplete="off" spellcheck="false" />
+                </div>
+                <button class="btn-primary" id="fetch-btn">
+                    <div class="spinner" id="fetch-spinner"></div>
+                    <span class="btn-label">Get Formats</span>
+                </button>
             </div>
-
-            <div class="form_input_wrapper">
-                <input type="url" id="form_input_url" placeholder="ENTER VALID MEDIA LINK HERE">
-            </div>
-
-            <div class="submit_btn_container">
-                <button disabled type="submit" id="form_button" onclick="form_input_submit()">GET QUALITIES</button>
-            </div>
-        </div>
-
-        <div class="quality_table" id="quality_table"></div>
-    </div>
-
-    <div class="main_section" id="view_supported_sites" style="display: none;">
-        <div class="supported_sites_section" style="display: flex;">
-            <div class="sites_header">
-                <h2>SUPPORTED EXTRACTORS</h2>
-                <p id="headerDescription">Loading dynamic site listings directly from the yt-dlp repository...</p>
-                <div class="search_container">
-                    <input type="text" id="searchInput" placeholder="SEARCH EXTRACTOR DOMAINS..." onkeyup="filterSites()">
+            <div class="error-banner" id="fetch-error">
+                <span class="error-icon">⚠️</span>
+                <div>
+                    <div class="error-title" id="fetch-err-title">Something went wrong</div>
+                    <div class="error-msg" id="fetch-err-msg"></div>
                 </div>
             </div>
-            <div id="loadingState" class="loading_sites">FETCHING AND PARSING EXTRACTORS...</div>
-            <ul class="site_list" id="siteList" style="display: none;"></ul>
+            <div class="video-info" id="video-info">
+                <div class="thumb-ph" id="thumb-ph">🎬</div>
+                <img class="video-thumb hidden" id="video-thumb" alt="">
+                <div class="video-meta">
+                    <div class="video-title" id="video-title">—</div>
+                    <div class="video-dur" id="video-dur"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: FORMAT PICKER -->
+        <div class="card hidden" id="step-formats">
+
+            <!-- MODE TOGGLE -->
+            <p class="section-label">What do you want?</p>
+            <div class="mode-row">
+                <button class="mode-btn active" id="mode-direct" data-mode="direct">
+                    <span class="mode-icon">⬇️</span>
+                    <div>
+                        <div class="mode-title">Direct download</div>
+                        <div class="mode-desc">Pick one format and download it as-is. Fast and simple.</div>
+                    </div>
+                </button>
+                <button class="mode-btn" id="mode-merge" data-mode="merge">
+                    <span class="mode-icon">🔀</span>
+                    <div>
+                        <div class="mode-title">Smart merge <span class="mode-badge">✨ NEW</span></div>
+                        <div class="mode-desc">Download video + audio separately and combine for best quality.</div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- DIRECT MODE -->
+            <div id="panel-direct">
+                <div class="format-tabs" id="direct-tabs">
+                    <button class="tab-btn active" data-type="all">All</button>
+                    <button class="tab-btn" data-type="combined">Video + Audio</button>
+                    <button class="tab-btn" data-type="video_only">Video only</button>
+                    <button class="tab-btn" data-type="audio_only">Audio only</button>
+                </div>
+                <div class="format-grid" id="direct-grid"></div>
+                <div class="empty-formats" id="direct-empty">No formats in this category.</div>
+            </div>
+
+            <!-- MERGE MODE -->
+            <div id="panel-merge" class="hidden">
+                <div
+                    style="background:rgba(108,99,255,.07);border:1px solid rgba(108,99,255,.18);border-radius:var(--rs);padding:14px 16px;margin-bottom:20px;font-size:.83rem;color:var(--accent2);line-height:1.6">
+                    💡 <strong>How it works:</strong> We download the best video track and the best audio track
+                    separately in your browser, then use FFmpeg (running right here in the page) to stitch them
+                    together. No server needed for the merge — it's all local.
+                </div>
+                <div class="merge-grid">
+                    <div class="merge-col">
+                        <label class="section-label">🎞 Pick a video track</label>
+                        <div class="format-grid" id="merge-video-grid"></div>
+                        <div class="empty-formats" id="merge-video-empty">No video-only formats.</div>
+                    </div>
+                    <div class="merge-col">
+                        <label class="section-label">🔊 Pick an audio track</label>
+                        <div class="format-grid" id="merge-audio-grid"></div>
+                        <div class="empty-formats" id="merge-audio-empty">No audio-only formats.</div>
+                    </div>
+                </div>
+                <div class="ffmpeg-loading" id="ffmpeg-loading">
+                    <div class="spinner"></div>
+                    <span id="ffmpeg-load-msg">Loading FFmpeg engine… (one-time, ~25 MB)</span>
+                </div>
+            </div>
+
+            <!-- ACTION BUTTON -->
+            <div class="download-action" id="download-action">
+                <button class="btn-download" id="btn-direct">
+                    <span>⬇</span><span id="direct-label">Download</span>
+                </button>
+                <button class="btn-merge hidden" id="btn-merge">
+                    <span>🔀</span><span id="merge-label">Merge &amp; Download</span>
+                </button>
+            </div>
+
+            <div class="error-banner" id="format-error">
+                <span class="error-icon">⚠️</span>
+                <div>
+                    <div class="error-title">Hold on</div>
+                    <div class="error-msg" id="format-err-msg"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: PROGRESS -->
+        <div class="card progress-card" id="step-progress">
+            <div class="prog-phases" id="prog-phases">
+                <!-- populated dynamically -->
+            </div>
+            <div class="merge-log" id="merge-log"></div>
+            <div class="error-banner" id="dl-error" style="margin-top:18px">
+                <span class="error-icon">⚠️</span>
+                <div>
+                    <div class="error-title" id="dl-err-title">Download failed</div>
+                    <div class="error-msg" id="dl-err-msg"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: SUCCESS -->
+        <div class="card success-card" id="step-success">
+            <div class="success-icon" id="success-icon">✅</div>
+            <div class="success-title" id="success-title">All done!</div>
+            <p class="success-sub" id="success-sub">Your file has landed in your Downloads folder.</p>
+            <button class="btn-again" id="btn-again">Download another video</button>
+        </div>
+
+        <!-- HINTS -->
+        <div class="hints">
+            <div class="hint-pill">🎬 YouTube</div>
+            <div class="hint-pill">📸 Instagram</div>
+            <div class="hint-pill">🎵 SoundCloud</div>
+            <div class="hint-pill">🐦 Twitter / X</div>
+            <div class="hint-pill">🎮 Twitch</div>
+            <div class="hint-pill">+ thousands more</div>
         </div>
     </div>
 
-    <div class="footer">
-        <span>ENJOY AD FREE EXPERIENCE</span>
-        <span>PROUDLY USES <span onclick="window.open('https://github.com/yt-dlp/yt-dlp', '_blank')", class="yt_dlp_link">YT-DLP</span> FOR BACKEND PROCESSING</span>
-        <span>PROUDLY USES FFMPEG WASM CORE FOR CLIENT SIDE MULTIPLEXING</span>
-    </div>
-
-    <div id="toast_container"></div>
-
     <script src="./coi-serviceworker.js"></script>
-    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
 
-    <script>
-        const url_input = document.getElementById("form_input_url");
-        const button_input = document.getElementById("form_button");
-        const quality_table = document.getElementById("quality_table");
-        const engine_status = document.getElementById("engine_status");
-        const console_text = document.getElementById("console_text");
-        const progress_fill = document.getElementById("progress_fill");
+    <!-- ffmpeg.wasm loaded lazily via ESM -->
+    <script type="module">
+        // ── CONFIG ───────────────────────────────────────────────────────────────────
+        const API = 'https://unidl-oiry.onrender.com';   // same-origin; change to 'http://localhost:8000' if separate
 
-        const api_url = 'https://unidl-oiry.onrender.com';
-        const TARGET_MD_URL = 'https://raw.githubusercontent.com/yt-dlp/yt-dlp/master/supportedsites.md';
+        // ── STATE ────────────────────────────────────────────────────────────────────
+        let formats = [];
+        let mode = 'direct';   // 'direct' | 'merge'
+        let directTab = 'all';
+        let selectedDirect = null;
+        let selectedVideo = null;
+        let selectedAudio = null;
+        let pollTimer = null;
+        let ffmpegReady = false;
+        let ffmpegLoading = false;
+        let FFmpegLib = null;   // lazily imported
 
-        const { createFFmpeg } = FFmpeg;
+        // ── ELEMENTS ─────────────────────────────────────────────────────────────────
+        const $ = id => document.getElementById(id);
+        const urlInput = $('url-input');
+        const fetchBtn = $('fetch-btn');
+        const fetchError = $('fetch-error');
+        const fetchErrT = $('fetch-err-title');
+        const fetchErrM = $('fetch-err-msg');
+        const videoInfo = $('video-info');
+        const thumbImg = $('video-thumb');
+        const thumbPh = $('thumb-ph');
+        const videoTitle = $('video-title');
+        const videoDur = $('video-dur');
 
-        const states = { is_ua_set: false, is_processing: false, is_sites_loaded: false };
-        const instances = { ffmpeg: null, datas: null, title: null };
+        const stepFormats = $('step-formats');
+        const panelDirect = $('panel-direct');
+        const panelMerge = $('panel-merge');
+        const directTabs = $('direct-tabs');
+        const directGrid = $('direct-grid');
+        const directEmpty = $('direct-empty');
+        const mergeVGrid = $('merge-video-grid');
+        const mergeVEmpty = $('merge-video-empty');
+        const mergeAGrid = $('merge-audio-grid');
+        const mergeAEmpty = $('merge-audio-empty');
+        const dlAction = $('download-action');
+        const btnDirect = $('btn-direct');
+        const btnMerge = $('btn-merge');
+        const directLabel = $('direct-label');
+        const mergeLabel = $('merge-label');
+        const formatError = $('format-error');
+        const formatErrM = $('format-err-msg');
+        // const ffmpegLoading = $('ffmpeg-loading');
+        const ffmpegLoadM = $('ffmpeg-load-msg');
 
-        function showToast(message, isError = false) {
-            const container = document.getElementById("toast_container");
-            const toast = document.createElement("div");
-            toast.className = `toast ${isError ? 'error' : ''}`;
-            toast.innerText = message.toUpperCase();
-            container.appendChild(toast);
-            setTimeout(() => { toast.remove(); }, 4000);
+        const stepProgress = $('step-progress');
+        const progPhases = $('prog-phases');
+        const mergeLog = $('merge-log');
+        const dlError = $('dl-error');
+        const dlErrT = $('dl-err-title');
+        const dlErrM = $('dl-err-msg');
+
+        const stepSuccess = $('step-success');
+        const successTitle = $('success-title');
+        const successSub = $('success-sub');
+        const btnAgain = $('btn-again');
+
+        // ── HELPERS ──────────────────────────────────────────────────────────────────
+        const b64 = s => btoa(unescape(encodeURIComponent(s)));
+        const fmt = b => { if (!b || b <= 0) return ''; const u = ['B', 'KB', 'MB', 'GB']; let i = 0, v = b; while (v >= 1024 && i < u.length - 1) { v /= 1024; i++ } return `${v.toFixed(i ? 1 : 0)} ${u[i]}`; };
+        const dur = s => { if (!s) return ''; const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), ss = Math.floor(s % 60); return h ? `${h}:${String(m).padStart(2, '0')}:${String(ss).padStart(2, '0')}` : `${m}:${String(ss).padStart(2, '0')}`; };
+        const show = el => el.classList.remove('hidden');
+        const hide = el => el.classList.add('hidden');
+        const friendly = code => ({
+            MISSING_URL: 'Please paste a video link into the box above.',
+            INVALID_BASE64: 'That link looks off — copy it directly from your browser\'s address bar and try again.',
+            FORMAT_FETCH_FAILED: 'We couldn\'t read that video. The site may have blocked the request, or the link may have expired. Try again in a moment.',
+            MISSING_FORMAT: 'Please choose a format before downloading.',
+            PROGRESS_NOT_FOUND: 'The download session disappeared. Please try again.',
+        }[code] || 'Something unexpected happened. Please try again.');
+
+        function showErr(titleEl, msgEl, bannerEl, title, msg) {
+            titleEl.textContent = title; msgEl.textContent = msg; bannerEl.classList.add('visible');
         }
+        function hideErr(el) { el.classList.remove('visible'); }
 
-        function updateConsole(text, statusText = "Processing", percent = null) {
-            console_text.innerText = `> ${text.toUpperCase()}`;
-            engine_status.innerText = statusText.toUpperCase();
-            if (percent !== null) {
-                progress_fill.style.width = `${percent}%`;
-            }
-        }
+        // ── FETCH FORMATS ─────────────────────────────────────────────────────────────
+        fetchBtn.addEventListener('click', fetchFormats);
+        urlInput.addEventListener('keydown', e => e.key === 'Enter' && fetchFormats());
 
-        function switchView(target) {
-            if (target === 'sites') {
-                document.getElementById('view_downloader').style.display = 'none';
-                document.getElementById('view_supported_sites').style.display = 'flex';
-                if (!states.is_sites_loaded) fetchAndParseSites();
-            } else {
-                document.getElementById('view_supported_sites').style.display = 'none';
-                document.getElementById('view_downloader').style.display = 'flex';
-            }
-        }
+        async function fetchFormats() {
+            const url = urlInput.value.trim();
+            if (!url) { showErr(fetchErrT, fetchErrM, fetchError, 'No link yet!', 'Paste a video link into the box above and try again.'); return; }
 
-        window.addEventListener("DOMContentLoaded", async () => {
-            updateConsole("Loading FFmpeg WebAssembly modules...", "Initializing", 15);
+            hideErr(fetchError);
+            videoInfo.classList.remove('visible');
+            hide(stepFormats);
+            hide(stepProgress);
+            hide(stepSuccess);
+            dlAction.classList.remove('visible');
+            selectedDirect = selectedVideo = selectedAudio = null;
+            formats = [];
+
+            fetchBtn.disabled = true;
+            fetchBtn.classList.add('loading');
+
             try {
-                instances.ffmpeg = createFFmpeg({ log: false });
-                await instances.ffmpeg.load({
-                    coreURL: "https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js",
-                    wasmURL: "https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm",
-                });
-                updateConsole("Core multiplexer hardware ready.", "Ready", 100);
-                setTimeout(() => { progress_fill.style.width = '0%'; }, 1000);
-            } catch (error) {
-                console.error("WASM Isolation Error:", error);
-                updateConsole("FFmpeg setup broke. Missing Isolation Headers.", "Fatal Error", 0);
-                showToast("System missing modern isolation wrappers", true);
-            }
-        });
-
-        function isUrlValid(string) {
-            try {
-                const url = new URL(string);
-                return (url.protocol === "http:" || url.protocol === "https:") && url.hostname.includes(".");
-            } catch {
-                return false;
-            }
-        }
-
-        url_input.addEventListener("input", (e) => {
-            if (states.is_processing) return;
-            button_input.textContent = "GET QUALITIES";
-            button_input.disabled = !isUrlValid(e.target.value);
-        });
-
-        url_input.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" && isUrlValid(url_input.value) && !states.is_processing) {
-                form_input_submit();
-            }
-        });
-
-        async function set_header() {
-            try {
-                const user_agent = btoa(navigator.userAgent);
-                const res = await fetch(`${api_url}/set_header?header=${user_agent}`);
-                const data = await res.json();
-                if (data.error) throw new Error();
-                states.is_ua_set = true;
-                updateConsole("User-Agent mapping completed cleanly.", "Ready");
-                return true;
-            } catch {
-                showToast("Backend connection failure. Stream alignment degraded.", true);
-                return false;
-            }
-        }
-
-        function toggleActionButtons(disabled) {
-            document.querySelectorAll(".col_action > button").forEach(btn => btn.disabled = disabled);
-        }
-
-        function get_table_row(reso, type, id, filesize, extension) {
-            const row = document.createElement("section");
-            row.className = "row";
-            row.innerHTML = `
-                <section class="col">${reso}</section>
-                <section class="col col_hide_mobile">${type.toUpperCase()}</section>
-                <section class="col">${filesize}</section>
-                <section class="col col_hide_mobile">${extension.toUpperCase()}</section>
-                <section class="col col_action">
-                    <button data-id="${id}" onclick="start_download_for('${id}')">DOWNLOAD</button>
-                </section>
-            `;
-            return row;
-        }
-
-        async function form_input_submit() {
-            if (states.is_processing) return;
-            states.is_processing = true;
-            button_input.disabled = true;
-            quality_table.style.display = "none";
-            quality_table.innerHTML = "";
-            button_input.innerHTML = '<div class="loader"></div>';
-
-            if (!states.is_ua_set) {
-                const success = await set_header();
-                if (!success) {
-                    button_input.textContent = "ERROR";
-                    states.is_processing = false;
-                    button_input.disabled = false;
-                    return;
-                }
-            }
-
-            const rawUrl = url_input.value.trim();
-            const encodedUrl = btoa(unescape(encodeURIComponent(rawUrl)));
-
-            instances.title = "Scraped Media Asset";
-            try {
-                updateConsole("Parsing source title identifiers...", "Scraping");
-                const tres = await fetch(`${api_url}/get_title?url=${encodedUrl}`);
-                if (tres.ok) {
-                    const tdata = await tres.json();
-                    if (tdata.title) instances.title = tdata.title;
-                }
+                const r = await fetch(`${API}/formats?url=${encodeURIComponent(b64(url))}`);
+                const j = await r.json();
+                if (!j.success) throw { code: j.error?.code, message: j.error?.message };
+                formats = j.data.formats || [];
+                renderVideoInfo(j.data);
+                renderAllGrids();
+                show(stepFormats);
             } catch (e) {
-                console.warn("Title route inaccessible, falling back.");
+                showErr(fetchErrT, fetchErrM, fetchError, 'Couldn\'t load video', friendly(e.code, e.message));
+            } finally {
+                fetchBtn.disabled = false;
+                fetchBtn.classList.remove('loading');
             }
-
-            try {
-                updateConsole("Contacting localized parser instance tracks...", "Parsing");
-                const res = await fetch(`${api_url}/get_for?url=${encodedUrl}`);
-                if (!res.ok) throw new Error();
-                instances.datas = await res.json();
-                if (instances.datas.error || !Array.isArray(instances.datas) || instances.datas.length === 0) {
-                    throw new Error();
-                }
-            } catch (error) {
-                showToast("Target processing instance or URL payload failed.", true);
-                button_input.textContent = "ERROR";
-                states.is_processing = false;
-                button_input.disabled = false;
-                return;
-            }
-
-            button_input.textContent = "LOADED";
-            button_input.disabled = false;
-            states.is_processing = false;
-
-            quality_table.innerHTML = `
-                <p class="table_title">${instances.title}</p>
-                <p class="table_header">Available Stream Packages</p>
-            `;
-
-            instances.datas.forEach((data, idx) => {
-                const row = get_table_row(
-                    data.resolution || "Audio Stream",
-                    data.type,
-                    data.id,
-                    data.filesize,
-                    data.video_extension || data.audio_extension || data.ext || "mp4"
-                );
-                quality_table.appendChild(row);
-
-                if (idx !== instances.datas.length - 1) {
-                    const line = document.createElement("div");
-                    line.className = "vertical_line";
-                    quality_table.appendChild(line);
-                }
-            });
-
-            const note = document.createElement("div");
-            note.className = "table_footer_note";
-            note.innerHTML = "* AUTOMATIC CLIENT-SIDE REMUXING TRIGGERS VIA LOCAL PROXY TUNNEL FOR SPLIT STREAMS.";
-            quality_table.appendChild(note);
-            quality_table.style.display = "flex";
         }
 
-        async function fetchStreamWithProgress(url, description) {
-            const encodedUrl = btoa(unescape(encodeURIComponent(url)));
-            const proxyUrl = `${api_url}/stream_proxy`;
+        // ── VIDEO INFO ────────────────────────────────────────────────────────────────
+        function renderVideoInfo(d) {
+            videoTitle.textContent = d.title || 'Untitled video';
+            videoDur.textContent = d.duration ? `Duration: ${dur(d.duration)}` : '';
+            if (d.thumbnail) {
+                thumbImg.src = d.thumbnail;
+                thumbImg.onload = () => { show(thumbImg); hide(thumbPh); };
+                thumbImg.onerror = () => { hide(thumbImg); show(thumbPh); };
+            }
+            videoInfo.classList.add('visible');
+        }
 
-            const response = await fetch(proxyUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url: encodedUrl })
-            });
-            if (!response.ok) throw new Error(`Proxy network code: ${response.status}`);
+        // ── MODE TOGGLE ───────────────────────────────────────────────────────────────
+        document.querySelectorAll('.mode-btn').forEach(btn => btn.addEventListener('click', () => {
+            mode = btn.dataset.mode;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (mode === 'direct') { show(panelDirect); hide(panelMerge); }
+            else { hide(panelDirect); show(panelMerge); preloadFFmpeg(); }
+            selectedDirect = selectedVideo = selectedAudio = null;
+            dlAction.classList.remove('visible');
+            hideErr(formatError);
+        }));
 
-            const contentLength = response.headers.get('Content-Length');
-            const total = contentLength ? parseInt(contentLength, 10) : 0;
+        // ── GRIDS ─────────────────────────────────────────────────────────────────────
+        function renderAllGrids() {
+            renderDirectGrid();
+            renderMergeGrids();
+        }
 
-            const reader = response.body.getReader();
-            let loaded = 0;
+        function renderDirectGrid() {
+            const filtered = directTab === 'all' ? formats : formats.filter(f => f.type === directTab);
+            directGrid.innerHTML = '';
+            directEmpty.classList.remove('visible');
+            if (!filtered.length) { directEmpty.classList.add('visible'); return; }
+            filtered.forEach(f => directGrid.appendChild(makeCard(f, 'direct')));
+        }
+
+        function renderMergeGrids() {
+            const vids = formats.filter(f => f.type === 'video_only');
+            const auds = formats.filter(f => f.type === 'audio_only');
+            mergeVGrid.innerHTML = ''; mergeAGrid.innerHTML = '';
+            mergeVEmpty.classList.remove('visible'); mergeAEmpty.classList.remove('visible');
+            if (!vids.length) mergeVEmpty.classList.add('visible');
+            else vids.forEach(f => mergeVGrid.appendChild(makeCard(f, 'merge-video')));
+            if (!auds.length) mergeAEmpty.classList.add('visible');
+            else auds.forEach(f => mergeAGrid.appendChild(makeCard(f, 'merge-audio')));
+        }
+
+        function makeCard(f, role) {
+            const card = document.createElement('div');
+            card.className = 'format-card';
+            card.dataset.id = f.format_id;
+            const bcls = f.type === 'combined' ? 'badge-b' : f.type === 'video_only' ? 'badge-v' : 'badge-a';
+            const blbl = f.type === 'combined' ? '🎬 Combined' : f.type === 'video_only' ? '🎞 Video' : '🔊 Audio';
+            const q = f.resolution || (f.type === 'audio_only' ? 'Audio' : 'Unknown');
+            const sz = f.filesize && f.filesize !== 'Unknown' ? f.filesize : '';
+            card.innerHTML = `
+    <div class="format-quality">${q}</div>
+    <div class="format-detail">
+      <span class="badge ${bcls}">${blbl}</span>
+      ${f.ext ? `<span class="badge">${f.ext.toUpperCase()}</span>` : ''}
+      ${f.fps ? `<span class="badge">${f.fps}fps</span>` : ''}
+    </div>
+    ${sz ? `<div class="format-size">${sz}</div>` : ''}`;
+            card.addEventListener('click', () => selectCard(f, card, role));
+            return card;
+        }
+
+        function selectCard(f, card, role) {
+            hideErr(formatError);
+            if (role === 'direct') {
+                directGrid.querySelectorAll('.format-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedDirect = f;
+                const q = f.resolution || (f.type === 'audio_only' ? 'Audio' : '?');
+                const sz = f.filesize && f.filesize !== 'Unknown' ? ` (${f.filesize})` : '';
+                directLabel.textContent = `Download ${q} · ${(f.ext || '').toUpperCase()}${sz}`;
+                show(btnDirect); hide(btnMerge);
+                dlAction.classList.add('visible');
+            } else if (role === 'merge-video') {
+                mergeVGrid.querySelectorAll('.format-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedVideo = f;
+                checkMergeReady();
+            } else {
+                mergeAGrid.querySelectorAll('.format-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedAudio = f;
+                checkMergeReady();
+            }
+        }
+
+        function checkMergeReady() {
+            if (selectedVideo && selectedAudio) {
+                const vsz = selectedVideo.raw_filesize || 0;
+                const asz = selectedAudio.raw_filesize || 0;
+                const total = vsz + asz ? ` (~${fmt(vsz + asz)} total)` : '';
+                mergeLabel.textContent = `Merge & Download${total}`;
+                hide(btnDirect); show(btnMerge);
+                dlAction.classList.add('visible');
+            }
+        }
+
+        // ── DIRECT TABS ───────────────────────────────────────────────────────────────
+        directTabs.addEventListener('click', e => {
+            const b = e.target.closest('.tab-btn'); if (!b) return;
+            directTabs.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
+            b.classList.add('active');
+            directTab = b.dataset.type;
+            selectedDirect = null; dlAction.classList.remove('visible');
+            renderDirectGrid();
+        });
+
+        // ── FFMPEG PRELOAD ────────────────────────────────────────────────────────────
+        async function preloadFFmpeg() {
+            if (ffmpegReady || ffmpegLoading) return;
+            ffmpegLoading = true;
+            ffmpegLoadingEl.classList.add('visible');
+            ffmpegLoadM.textContent = 'Loading FFmpeg engine… (one-time, ~25 MB)';
+            try {
+                FFmpegLib = await import('https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js');
+                const { toBlobURL } = await import('https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js');
+                const base = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
+                const _ff = new FFmpegLib.FFmpeg();
+                await _ff.load({
+                    coreURL: await toBlobURL(`${base}/ffmpeg-core.js`, 'text/javascript'),
+                    wasmURL: await toBlobURL(`${base}/ffmpeg-core.wasm`, 'application/wasm'),
+                });
+                FFmpegLib._instance = _ff;
+                ffmpegReady = true;
+                ffmpegLoadingEl.classList.remove('visible');
+            } catch (e) {
+                ffmpegLoadM.textContent = '⚠️ Failed to load FFmpeg engine. Merge may not work.';
+                console.error('ffmpeg load error', e);
+            } finally {
+                ffmpegLoading = false;
+            }
+        }
+
+        // element alias (variable name clash with state var)
+        const ffmpegLoadingEl = $('ffmpeg-loading');
+
+        // ── DIRECT DOWNLOAD ───────────────────────────────────────────────────────────
+        btnDirect.addEventListener('click', () => {
+            if (!selectedDirect) return;
+            hideErr(formatError);
+            startDirectDownload();
+        });
+
+        async function startDirectDownload() {
+            const url = urlInput.value.trim();
+            const id = crypto.randomUUID();
+            const params = new URLSearchParams({ url: b64(url), format: selectedDirect.format_id, id });
+            if (selectedDirect.raw_filesize) params.set('size', selectedDirect.raw_filesize);
+
+            hide(stepFormats);
+            stepProgress.classList.add('visible');
+            hide(stepSuccess);
+            dlError.classList.remove('visible');
+
+            // Build phases UI — single phase for direct
+            progPhases.innerHTML = makePhaseHTML('dl', '⬇️', 'Downloading…', 'fill-v');
+            hide(mergeLog);
+
+            // Trigger browser download via <a>
+            const a = document.createElement('a');
+            a.href = `${API}/stream?${params}`; a.style.display = 'none';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+
+            // Poll progress
+            pollDirectProgress(id, selectedDirect.raw_filesize || 0);
+        }
+
+        function makePhaseHTML(key, icon, label, fillClass) {
+            return `<div class="phase" id="phase-${key}">
+    <div class="phase-header">
+      <div class="phase-label">
+        <div class="status-dot" id="dot-${key}"></div>
+        <span class="phase-icon">${icon}</span>
+        <span id="lbl-${key}">${label}</span>
+      </div>
+      <span class="phase-pct" id="pct-${key}">0%</span>
+    </div>
+    <div class="track"><div class="fill ${fillClass}" id="fill-${key}"></div></div>
+    <div class="phase-sub" id="sub-${key}"></div>
+  </div>`;
+        }
+
+        function setPhase(key, pct, sub, done = false, err = false) {
+            const fillEl = $(`fill-${key}`);
+            const pctEl = $(`pct-${key}`);
+            const dotEl = $(`dot-${key}`);
+            const subEl = $(`sub-${key}`);
+            const phaseEl = $(`phase-${key}`);
+            if (!fillEl) return;
+            fillEl.style.width = pct + '%';
+            pctEl.textContent = Math.round(pct) + '%';
+            subEl.textContent = sub || '';
+            dotEl.className = 'status-dot' + (done ? ' done' : err ? ' err' : '');
+            if (done) phaseEl.classList.add('done');
+        }
+
+        function pollDirectProgress(id, knownTotal) {
+            let misses = 0, doneCount = 0;
+            clearInterval(pollTimer);
+            pollTimer = setInterval(async () => {
+                try {
+                    const r = await fetch(`${API}/progress?id=${id}`);
+                    const j = await r.json();
+                    if (!j.success) { if (++misses > 15) { clearInterval(pollTimer); showDlError('We lost track of your download. Check your Downloads folder — it may have arrived anyway!'); } return; }
+                    misses = 0;
+                    const d = j.data;
+                    const pct = Math.min(d.percentage || 0, 100);
+                    const dlb = d.downloaded || 0;
+                    const tot = d.total || knownTotal || 0;
+                    const sub = dlb ? fmt(dlb) + (tot ? ` of ${fmt(tot)}` : '') : 'Starting…';
+                    setPhase('dl', pct, sub, d.status === 'finished');
+                    if (d.status === 'error') { clearInterval(pollTimer); showDlError('The download ran into a problem. Try again or pick a different format.'); }
+                    if (d.status === 'finished') {
+                        if (++doneCount > 1) { clearInterval(pollTimer); setTimeout(() => showSuccess('Download complete!', 'Your file has been saved to your Downloads folder.'), 400); }
+                    }
+                } catch { }
+            }, 500);
+        }
+
+        // ── MERGE DOWNLOAD ────────────────────────────────────────────────────────────
+        btnMerge.addEventListener('click', async () => {
+            hideErr(formatError);
+            if (!selectedVideo || !selectedAudio) { showErr({ textContent: '' }, formatErrM, formatError, 'Select both tracks', 'Please pick a video track and an audio track before merging.'); return; }
+            if (!ffmpegReady) {
+                showErr({ textContent: '' }, formatErrM, formatError, 'FFmpeg not ready', 'The merge engine is still loading. Wait a moment and try again.'); return;
+            }
+            startMerge();
+        });
+
+        async function startMerge() {
+            const url = urlInput.value.trim();
+            const vid = selectedVideo, aud = selectedAudio;
+
+            hide(stepFormats);
+            stepProgress.classList.add('visible');
+            hide(stepSuccess);
+            dlError.classList.remove('visible');
+
+            // Build 3-phase UI: video dl, audio dl, merge
+            progPhases.innerHTML =
+                makePhaseHTML('vid', '🎞', 'Downloading video…', 'fill-v') +
+                makePhaseHTML('aud', '🔊', 'Downloading audio…', 'fill-a') +
+                makePhaseHTML('mux', '🔀', 'Merging tracks…', 'fill-m');
+
+            mergeLog.innerHTML = '';
+            show(mergeLog);
+
+            const log = msg => {
+                mergeLog.innerHTML += `<div>${msg}</div>`;
+                mergeLog.scrollTop = mergeLog.scrollHeight;
+            };
+
+            log('Starting parallel download of video and audio tracks…');
+
+            try {
+                // Download video and audio in parallel
+                const [videoBytes, audioBytes] = await Promise.all([
+                    downloadToBuffer(url, vid, 'vid', log),
+                    downloadToBuffer(url, aud, 'aud', log),
+                ]);
+
+                log(`✅ Video: ${fmt(videoBytes.byteLength)}  |  Audio: ${fmt(audioBytes.byteLength)}`);
+                log('Handing off to FFmpeg — merging tracks…');
+
+                setPhase('mux', 5, 'Initialising FFmpeg…');
+
+                const ff = FFmpegLib._instance;
+
+                // Register progress callback
+                ff.on('progress', ({ progress }) => {
+                    const p = Math.min(Math.round(progress * 100), 99);
+                    setPhase('mux', p, `Muxing… ${p}%`);
+                });
+                ff.on('log', ({ message }) => log(message));
+
+                // Write files into WASM virtual FS
+                const vext = vid.ext || 'mp4';
+                const aext = aud.ext || 'm4a';
+                await ff.writeFile(`video.${vext}`, new Uint8Array(videoBytes));
+                await ff.writeFile(`audio.${aext}`, new Uint8Array(audioBytes));
+
+                log(`Running: ffmpeg -i video.${vext} -i audio.${aext} -c copy output.mp4`);
+
+                await ff.exec([
+                    '-i', `video.${vext}`,
+                    '-i', `audio.${aext}`,
+                    '-c', 'copy',       // stream-copy: no re-encode, blazing fast
+                    '-movflags', '+faststart',
+                    'output.mp4',
+                ]);
+
+                setPhase('mux', 100, 'Done!', true);
+                log('✅ Merge complete! Preparing download…');
+
+                const data = await ff.readFile('output.mp4');
+                // Clean up WASM FS
+                await ff.deleteFile(`video.${vext}`).catch(() => { });
+                await ff.deleteFile(`audio.${aext}`).catch(() => { });
+                await ff.deleteFile('output.mp4').catch(() => { });
+
+                // Trigger browser save
+                const blob = new Blob([data], { type: 'video/mp4' });
+                const blobURL = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobURL; a.download = 'ripple-merged.mp4'; a.style.display = 'none';
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(blobURL), 60000);
+
+                log('🎉 File saved to your Downloads folder.');
+                setTimeout(() => showSuccess('Merge complete!', 'Your HD video has been saved to your Downloads folder.'), 600);
+
+            } catch (e) {
+                console.error('merge error', e);
+                showDlError(`Something went wrong during the merge: ${e.message || e}. Try again or use Direct Download instead.`);
+            }
+        }
+
+        async function downloadToBuffer(url, fmt_info, phaseKey, log) {
+            const id = crypto.randomUUID();
+            const params = new URLSearchParams({ url: b64(url), format: fmt_info.format_id, id });
+            if (fmt_info.raw_filesize) params.set('size', fmt_info.raw_filesize);
+
+            log(`⬇ Downloading ${phaseKey === 'vid' ? 'video' : 'audio'} (${fmt_info.resolution || fmt_info.ext || '?'})…`);
+
+            const response = await fetch(`${API}/stream?${params}`);
+            if (!response.ok) throw new Error(`Server returned ${response.status} for ${phaseKey}`);
+
+            const total = fmt_info.raw_filesize || 0;
+            let downloaded = 0;
             const chunks = [];
 
+            // Also poll progress from server while streaming body
+            const pollId = setInterval(async () => {
+                try {
+                    const r = await fetch(`${API}/progress?id=${id}`);
+                    const j = await r.json();
+                    if (j.success) {
+                        const d = j.data;
+                        const pct = Math.min(d.percentage || 0, 99);
+                        const sub = d.downloaded ? fmt(d.downloaded) + (d.total ? ` of ${fmt(d.total)}` : '') : 'Streaming…';
+                        setPhase(phaseKey, pct, sub);
+                    }
+                } catch { }
+            }, 600);
+
+            // Stream the response body chunk by chunk
+            const reader = response.body.getReader();
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
                 chunks.push(value);
-                loaded += value.byteLength;
-                if (total > 0) {
-                    const pct = Math.round((loaded / total) * 100);
-                    updateConsole(`${description} [${pct}%]`, "Buffering", Math.round(pct * 0.8));
-                }
+                downloaded += value.byteLength;
+                const pct = total ? Math.min((downloaded / total) * 100, 99) : 0;
+                setPhase(phaseKey, pct, fmt(downloaded) + (total ? ` of ${fmt(total)}` : ' downloaded'));
             }
 
-            const completeArray = new Uint8Array(loaded);
+            clearInterval(pollId);
+            setPhase(phaseKey, 100, fmt(downloaded), true);
+
+            // Concatenate chunks into a single ArrayBuffer
+            const all = new Uint8Array(downloaded);
             let offset = 0;
-            for (const chunk of chunks) {
-                completeArray.set(chunk, offset);
-                offset += chunk.byteLength;
-            }
-            return completeArray.buffer;
+            for (const chunk of chunks) { all.set(chunk, offset); offset += chunk.byteLength; }
+            return all.buffer;
         }
 
-        async function forceDownload(fileUrl, ext) {
-            try {
-                updateConsole("Opening proxy download tunnel...", "Streaming", 30);
-                const buf = await fetchStreamWithProgress(fileUrl, "Downloading file payload");
-
-                updateConsole("Generating deployment blob...", "Saving", 90);
-                const blob = new Blob([buf], { type: "application/octet-stream" });
-                const blobUrl = URL.createObjectURL(blob);
-
-                const safeName = instances.title.replace(/[/\\?%*:|"<>]/g, '-');
-                const a = document.createElement("a");
-                a.href = blobUrl;
-                a.download = `${safeName}.${ext}`;
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                URL.revokeObjectURL(blobUrl);
-
-                updateConsole("Pipeline cleared successfully.", "Complete", 100);
-                setTimeout(() => { progress_fill.style.width = '0%'; }, 1500);
-            } catch (err) {
-                console.error(err);
-                showToast("Download transmission pipeline failed.", true);
-                updateConsole("Transmission failed.", "Error", 0);
-            }
+        // ── SHOW SUCCESS / ERROR ──────────────────────────────────────────────────────
+        function showSuccess(title, sub) {
+            hide(stepProgress);
+            successTitle.textContent = title;
+            successSub.textContent = sub;
+            stepSuccess.classList.add('visible');
+            stepSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        async function youtube_download(videoData) {
-            if (!instances.ffmpeg || !instances.ffmpeg.isLoaded()) {
-                showToast("FFmpeg Core down. Falling back to video-only track.", true);
-                await forceDownload(videoData.url, videoData.video_extension || "mp4");
-                return;
-            }
-
-            try {
-                updateConsole("Locating high bit-rate audio payload...", "Routing", 5);
-                let audioData = instances.datas.find(d => d.id === "251" || d.type === "audio_only");
-                if (!audioData) audioData = instances.datas.find(d => d.audio_codec !== "none");
-
-                if (!audioData) {
-                    showToast("No track target mapping for separate audio found.", true);
-                    await forceDownload(videoData.url, videoData.video_extension || "mp4");
-                    return;
-                }
-
-                updateConsole("Connecting video pipeline channel...", "Streaming", 10);
-                const vBuf = await fetchStreamWithProgress(videoData.url, "Downloading Video Component");
-
-                updateConsole("Connecting audio pipeline channel...", "Streaming", 50);
-                const aBuf = await fetchStreamWithProgress(audioData.url, "Downloading Audio Component");
-
-                updateConsole("Injecting buffers into virtual sandbox...", "Muxing", 80);
-                instances.ffmpeg.FS('writeFile', 'vid.raw', new Uint8Array(vBuf));
-                instances.ffmpeg.FS('writeFile', 'aud.raw', new Uint8Array(aBuf));
-
-                updateConsole("Multiplexing audio/video frames without compression loss...", "Encoding", 90);
-                await instances.ffmpeg.run(
-                    '-i', 'vid.raw', '-i', 'aud.raw',
-                    '-c:v', 'copy', '-c:a', 'aac',
-                    '-map', '0:v:0', '-map', '1:a:0',
-                    'output.mp4'
-                );
-
-                updateConsole("Extracting completed video file wrapper...", "Finalizing", 95);
-                const rawOutput = instances.ffmpeg.FS('readFile', 'output.mp4');
-                const combinedBlob = new Blob([rawOutput.buffer], { type: 'video/mp4' });
-                const blobUrl = URL.createObjectURL(combinedBlob);
-
-                const safeName = instances.title.replace(/[/\\?%*:|"<>]/g, '-');
-                const a = document.createElement("a");
-                a.href = blobUrl;
-                a.download = `${safeName}.mp4`;
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                URL.revokeObjectURL(blobUrl);
-
-                try {
-                    instances.ffmpeg.FS('unlink', 'vid.raw');
-                    instances.ffmpeg.FS('unlink', 'aud.raw');
-                    instances.ffmpeg.FS('unlink', 'output.mp4');
-                } catch (e) { console.warn("FS cleaning warning: ", e); }
-
-                updateConsole("Mux operations finalized cleanly.", "Complete", 100);
-                setTimeout(() => { progress_fill.style.width = '0%'; }, 1500);
-            } catch (err) {
-                console.error(err);
-                showToast("WASM thread crashed. Saving raw video segment only.", true);
-                await forceDownload(videoData.url, videoData.video_extension || "mp4");
-            }
+        function showDlError(msg) {
+            dlErrT.textContent = 'Something went wrong';
+            dlErrM.textContent = msg;
+            dlError.classList.add('visible');
+            dlError.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        async function start_download_for(id) {
-            if (states.is_processing) return;
-            states.is_processing = true;
-            toggleActionButtons(true);
-
-            const data = instances.datas.find(d => d.id == id);
-            if (!data) {
-                showToast("Invalid stream identifier layout targeted.", true);
-                toggleActionButtons(false);
-                states.is_processing = false;
-                return;
-            }
-
-            if (data.type === "video_only") {
-                await youtube_download(data);
-            } else {
-                await forceDownload(data.url, data.video_extension || data.audio_extension || data.ext || "mp4");
-            }
-
-            toggleActionButtons(false);
-            states.is_processing = false;
-        }
-
-        async function fetchAndParseSites() {
-            try {
-                const response = await fetch(TARGET_MD_URL);
-                if (!response.ok) throw new Error();
-
-                const markdown = await response.text();
-                const lines = markdown.split('\n');
-
-                const siteListContainer = document.getElementById('siteList');
-                let sitesHTML = '';
-
-                const itemRegex = /^\s*-\s*\*\*(.*?)\*\*(.*)$/;
-                const netrcRegex = /"netrc machine"/i;
-                const brokenRegex = /Currently broken/i;
-
-                lines.forEach(line => {
-                    const match = line.match(itemRegex);
-                    if (match) {
-                        const siteName = match[1].trim();
-                        let extraContent = match[2].trim();
-
-                        let isNetrc = netrcRegex.test(extraContent);
-                        let isBroken = brokenRegex.test(extraContent);
-
-                        let description = extraContent
-                            .replace(/\[.*?\]\(.*?\)/g, '')
-                            .replace(/:\s*\(\*\*Currently broken\*\*\)/i, '')
-                            .replace(/:\s*/, '')
-                            .trim();
-
-                        sitesHTML += `
-                            <li class="site-item">
-                                <span class="site-name">${siteName}</span>
-                                ${isNetrc ? '<span class="badge netrc">Requires netrc</span>' : ''}
-                                ${isBroken ? '<span class="badge broken">Currently broken</span>' : ''}
-                                ${description ? `<span class="site-desc">${description}</span>` : ''}
-                            </li>
-                        `;
-                    }
-                });
-
-                siteListContainer.innerHTML = sitesHTML;
-                document.getElementById('loadingState').style.display = 'none';
-                siteListContainer.style.display = 'grid';
-                document.getElementById('headerDescription').innerText = `This software interfaces directly with yt-dlp to support continuous engine updates across upstream targets.`;
-                states.is_sites_loaded = true;
-            } catch (error) {
-                console.error('Extraction Sync Error:', error);
-                document.getElementById('loadingState').innerText = 'FAILED TO SYNC EXTERNAL ASSET INDICES FROM GITHUB.';
-            }
-        }
-
-        function filterSites() {
-            const filter = document.getElementById('searchInput').value.toLowerCase();
-            const li = document.getElementById('siteList').getElementsByTagName('li');
-
-            for (let i = 0; i < li.length; i++) {
-                const nameNode = li[i].querySelector('.site-name');
-                const descNode = li[i].querySelector('.site-desc');
-
-                const nameText = nameNode ? nameNode.textContent || nameNode.innerText : '';
-                const descText = descNode ? descNode.textContent || descNode.innerText : '';
-
-                if (nameText.toLowerCase().includes(filter) || descText.toLowerCase().includes(filter)) {
-                    li[i].style.display = "";
-                } else {
-                    li[i].style.display = "none";
-                }
-            }
-        }
-
-        set_header();
+        // ── RESET ─────────────────────────────────────────────────────────────────────
+        btnAgain.addEventListener('click', () => {
+            clearInterval(pollTimer);
+            urlInput.value = '';
+            selectedDirect = selectedVideo = selectedAudio = null;
+            formats = []; mode = 'direct'; directTab = 'all';
+            hideErr(fetchError); hideErr(formatError); hideErr(dlError);
+            videoInfo.classList.remove('visible');
+            hide(stepFormats); hide(stepProgress); hide(stepSuccess);
+            hide(thumbImg); show(thumbPh);
+            // Reset mode UI
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            $('mode-direct').classList.add('active');
+            show(panelDirect); hide(panelMerge);
+            directTabs.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            directTabs.querySelector('[data-type="all"]').classList.add('active');
+            urlInput.focus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     </script>
 </body>
 
